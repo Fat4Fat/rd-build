@@ -57,11 +57,11 @@ RUN cd /usr/src && \
  mv mirror php-7.1.2.tar.xz && xz -d php-7.1.2.tar.xz && tar xvf php-7.1.2.tar && \
  cd php-7.1.2 && \
  ./configure --prefix=/usr/local/php --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-gd --with-jpeg-dir=/usr/lib64/ --with-iconv --with-openssl --with-curl --enable-pcntl --with-zlib --enable-bcmath --enable-json --enable-fpm --enable-mbstring --enable-soap --enable-opcache && \
- make -j4 && make install && \
- echo -e 'export PATH=/usr/local/php/bin:usr/local/php/sbin:$PATH' >> ~/.bashrc && \
- source ~/.bashrc && \
+ make -j4 && make install
 
  ### yaf
+RUN echo -e 'export PATH=/usr/local/php/bin:usr/local/php/sbin:$PATH' >> ~/.bashrc && \
+ source ~/.bashrc && \
  cd /usr/src && \
  wget http://pecl.php.net/get/yaf-3.0.4.tgz && tar zxvf yaf-3.0.4.tgz && \
  cd yaf-3.0.4 && phpize && ./configure && make -j4 && make install && \
