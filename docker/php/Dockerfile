@@ -34,16 +34,13 @@ RUN rpm -Uvh https://dev.mysql.com/get/mysql57-community-release-el6-9.noarch.rp
 ### 安装依赖
 RUN yum -y install readline-devel pcre-devel openssl-devel && \
 ### 安装软件
-RUN wget https://openresty.org/download/openresty-1.11.2.3.tar.gz && \
+ wget https://openresty.org/download/openresty-1.11.2.3.tar.gz && \
  tar -xzvf openresty-1.11.2.3.tar.gz && \
  cd openresty-1.11.2.3 && \
- ./configure && \
- make && \
- make install && \
+ ./configure && make && make install && \
 
  ln -s /usr/local/openresty/nginx/conf /etc/nginx && \
  mkdir /etc/nginx/vhosts
-
 ###添加配置
 ADD conf/nginx/* /etc/nginx/
 ADD conf/nginx/vhosts/* /etc/nginx/vhosts/
@@ -62,7 +59,7 @@ RUN cd /usr/src && \
  ./configure --prefix=/usr/local/php --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-gd --with-jpeg-dir=/usr/lib64/ --with-iconv --with-openssl --with-curl --enable-pcntl --with-zlib --enable-bcmath --enable-json --enable-fpm --enable-mbstring --enable-soap --enable-opcache && \
  make -j4 && make install && \
  echo -e 'export PATH=/usr/local/php/bin:usr/local/php/sbin:$PATH' >> ~/.bashrc && \
- source ~/.bashrc
+ source ~/.bashrc && \
 
  ### yaf
  cd /usr/src && \
@@ -82,8 +79,8 @@ RUN cd /usr/src && \
  ### phpunit
  cd /usr/src && \
  wget https://phar.phpunit.de/phpunit-6.1.phar && \
- cp phpunit.phar /usr/local/bin/phpunit && \
- chmod +x /usr/local/bin/phpunit && \
+ cp phpunit-6.1.phar /usr/local/bin/phpunit && \
+ chmod +x /usr/local/bin/phpunit
 
 ADD conf/php/php.ini /usr/local/php/lib/
 ADD conf/php/php-fpm.conf /usr/local/php/etc/
