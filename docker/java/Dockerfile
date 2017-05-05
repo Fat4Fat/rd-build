@@ -16,7 +16,7 @@ RUN yum install -y net-tools vsftpd vim wget crontabs gcc make openssh-server gi
 ##################### 常用基础软件 END #####################
 
 ##################### 安装java-1.8.0-openjdk-headless #########
-RUN yum install java-1.8.0-openjdk-headless
+RUN yum install -y java-1.8.0-openjdk-headless
 ##################### 安装java-1.8.0-openjdk-headless end #####
 
 ###################### redis START #####################

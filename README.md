@@ -1,14 +1,81 @@
 # 构建完整研发内部服务
+> 一个完整的研发内部服务（200人以下研发适用）
 
+1. 基础设施搭建。
+
+    - 网络：
+
+      - 网络划分
+      - 路由设置
+      - 防火墙
+      - 企业VPN
+      - 海外代理
+      - 内网DNS
+
+    - 物理机器
+
+      - 磁盘阵列
+      - 小集群管理（1-10台）
+      - 容器化
+
+    - 企业软件
+
+      > 核心是组织管理，其他服务是围绕组织管理开展
+
+      - 协同
+        - 邮箱
+        - IM
+        - 网盘
+        - wiki
+      - 组织管理
+        - 通讯录
+        - 组织管理
+        - 员工统一鉴权（密码+二步认证）
+      - OA
+        - 财务
+        - 行政
+        - 人事
+        - 审批
+        - 报表
+      - 研发
+        - gitlab
+        - 镜像仓库
+
+2.  研发中心
+
+    > 为研发测试提供提升开发效率和保证质量的平台
+    >
+    > 详见文档 https://github.com/ifintech/rdcenter
+
+3. 持续迭代研发周期管理
+
+    > 详见文档 https://github.com/ifintech/rdflow
+
+4. 规章制度和研发规范
+
+    > 详见文档 https://github.com/ifintech/rddocs
+
+
+
+
+## 内网部署实施
+
+> 非云服务资源部署如下
+> 不使用云服务，无非两点 1.价格贵 2.核心数据资产，要么就是内部支撑无法使用云服务比如DNS
 
 ### 内网入口 staff.nw.com
-### 宿主机 172.16.2.2
+### 1. 宿主机 172.16.2.2
 
->建议配置16G内存，2T硬盘，1U8核，开发团队人数50人以下
+>配置16G内存，2T硬盘，1U8核
 >环境centos7，使用docker提供服务
 >常规配置（时间、DNS、网络）
 
-### 内网DNS （宿主机）172.16.2.2
+安装docker服务 https://github.com/ifintech/rdbuild/tree/master/docker
+
+
+
+### 2. 内网DNS 172.16.2.2
+
 >安装dnsmsq http://www.thekelleys.org.uk/dnsmasq/
 
 ```shell
@@ -25,7 +92,9 @@ vim /ect/hosts
 172.16.2.3 gitlab.nw.com
 ```
 
-### 代码（镜像）仓库 & 持续集成 172.16.2.3 gitlab.nw.com 
+
+
+### 3. 代码（镜像）仓库 & 持续集成 172.16.2.3 gitlab.nw.com 
 
 >优先使用docker安装 https://docs.gitlab.com/omnibus/docker/
 
@@ -53,12 +122,12 @@ gitlab_rails['ldap_enabled'] = true
 gitlab_rails['ldap_servers'] = YAML.load <<-EOS # remember to close this block with 'EOS' below
 main: # 'main' is the GitLab 'provider ID' of this LDAP server
   label: 'LDAP'
-  host: '42.159.123.20'
-  port: 10389
+  host: '{$ip}'
+  port: '{$port}'
   uid: 'sAMAccountName'
   method: 'plain' # "tls" or "ssl" or "plain"
-  base: 'OU=People,DC=auth,DC=jrmf360,DC=com'
-  bind_dn: 'CN=sAMAccountName@jrmf360.com,OU=People,DC=auth,DC=jrmf360,DC=com'
+  base: 'OU=People,DC=auth,DC=company,DC=com'
+  bind_dn: 'CN=sAMAccountName@company.com,OU=People,DC=auth,DC=company,DC=com'
   password: 'password'
   user_filter: ''
   active_directory: false
@@ -73,7 +142,7 @@ gitlab-ctl reconfigure
 
 
 
-### 网盘 172.16.2.4 pan.nw.com
+### 4. 网盘 172.16.2.4 pan.nw.com
 
 > 安装owncloud https://owncloud.org/  
 
@@ -89,7 +158,7 @@ pipework br0 owncloud 172.16.2.4/24@172.16.2.1
 
 
 
-### 公网接入内网办公VPN 172.16.2.5
+### 5. 公网接入内网办公VPN 172.16.2.5
 
 > 安装openvpn
 >
@@ -113,27 +182,13 @@ pipework br0 openvpn 172.16.2.5/24@172.16.2.1
 
 
 
-### 研发中心 172.16.2.6 rd.nw.com
+### 6.企业wiki 172.16.2.6 wiki.nw.com
 
-> 安装研发中心 rdcenter
-> 研发中心下属网段172.16.2.100-172.16.2.200
-
-```shell
-sudo docker run -itd \
---name rdcenter \
---net=none \
-rdcenter
-
-pipework br0 rdcenter 172.16.2.5/24@172.16.2.1
-```
+### 7.镜像仓库 172.16.2.7 images.nw.com
 
 
 
-### 企业wiki 172.16.2.7 wiki.nw.com
-
-
-
-### 海外办公专线
+### 8. 海外办公专线
 
 >访问海外资源（邮箱、代码包、产品）
 >
@@ -145,7 +200,7 @@ pipework br0 rdcenter 172.16.2.5/24@172.16.2.1
 
 
 
-### 网络7层HTTP转发 172.16.2.10
+### 9. 网络7层HTTP转发 172.16.2.10
 
 > 启用dnsmasq泛解析，通过nginx做内部HTTP转发到指定服务器
 > 在rdcenter里scp配置nginx文件给指定服务器
@@ -154,7 +209,7 @@ pipework br0 rdcenter 172.16.2.5/24@172.16.2.1
 sudo docker run -itd \
 --name nginx_proxy \
 --net=none \
-nginx_proxy
+nginx
 
 pipework br0 nginx_proxy 172.16.2.6/24@172.16.2.1
 ```
