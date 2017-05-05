@@ -55,11 +55,11 @@ ADD conf/nginx/nginx /etc/init.d/nginx
 
 RUN cd /usr/src && \
  ###安装php7
- yum -y install libxml2-devel curl-devel libpng-devel autoconf && \
+ yum -y install libxml2-devel curl-devel libpng-devel gd-devel autoconf xz && \
  wget http://cn2.php.net/get/php-7.1.2.tar.xz/from/this/mirror && \
  mv mirror php-7.1.2.tar.xz && xz -d php-7.1.2.tar.xz && tar xvf php-7.1.2.tar && \
  cd php-7.1.2 && \
- ./configure --prefix=/usr/local/php --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-gd --with-jpeg-dir='/usr/local/jpeg' --with-iconv --with-openssl --with-curl --enable-pcntl --enable-bcmath --enable-json --enable-fpm --enable-mbstring --enable-soap --enable-opcache && \
+ ./configure --prefix=/usr/local/php --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-gd --with-jpeg-dir=/usr/lib64/ --with-iconv --with-openssl --with-curl --enable-pcntl --enable-bcmath --enable-json --enable-fpm --enable-mbstring --enable-soap --enable-opcache && \
  make -j4 && make install && \
  echo -e 'export PATH=/usr/local/php/bin:usr/local/php/sbin:$PATH' >> ~/.bashrc && \
  source ~/.bashrc
