@@ -13,10 +13,10 @@
 touch /var/lock/subsys/local
 
 service sshd start
-/etc/init.d/redis start
 service mysqld start
+php-fpm start
 /etc/init.d/nginx start
-/etc/init.d/php-fpm start
+/etc/init.d/redis start
 
 ##必须在最后
 /bin/bash
