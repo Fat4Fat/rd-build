@@ -172,7 +172,7 @@ pipework br0 owncloud 172.16.2.4/24@172.16.2.1
 #!/bin/bash
 docker pull kylemanna/openvpn
 OVPN_DATA="/data/ovpn-data"
-IP="124.65.192.206"
+IP="office_ip"
 mkdir ${OVPN_DATA}
 docker run -v ${OVPN_DATA}:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://${IP}
 docker run -v ${OVPN_DATA}:/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
@@ -211,6 +211,6 @@ sudo docker run -itd \
 --net=none \
 nginx
 
-pipework br0 nginx_proxy 172.16.2.6/24@172.16.2.1
+pipework br0 nginx_proxy 172.16.2.10/24@172.16.2.1
 ```
 

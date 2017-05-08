@@ -1,4 +1,6 @@
-### docker环境搭建
+# docker基本构建
+
+## docker安装
 
 >官方安装 https://store.docker.com/editions/community/docker-ce-server-centos?tab=description
 
@@ -20,7 +22,7 @@ docker服务启动 重启 停止
     
     [root@localhost vagrant]# service docker stop
     Redirecting to /bin/systemctl stop  docker.service
-### docker优化配置
+## docker容器网段设置
 
 
 ### 分配独立IP
@@ -73,14 +75,14 @@ docker服务启动 重启 停止
     docker run -d -it --net=none --name test01 centos
 
     pipework br0 test01 172.16.2.3/24@172.16.2.1
-### docker仓库
+## docker仓库
 
-#### 使用本地gitlab仓库（优先）
-#### 搭建本地仓库（不建议）
+### 使用本地gitlab仓库（优先）
+### 搭建本地仓库（不建议）
 
     sudo docker run -d -p 5000:5000 -v /opt/data/registry:/tmp/registry registry
 
-#### 在私有仓库上传、下载、搜索镜像
+### 在私有仓库上传、下载、搜索镜像
 
 > https://yeasy.gitbooks.io/docker_practice/content/repository/local_repo.html
 
@@ -105,7 +107,7 @@ dockerfile镜像
 
 >https://yeasy.gitbooks.io/docker_practice/content/image/dockerfile/
 
-### 自定义镜像
+## 自定义镜像dockerfile
 
 - centos7 镜像，新增sshd
 - php 镜像，php7.1.2 & mysql 5.7 & redis3.2 & nginx
