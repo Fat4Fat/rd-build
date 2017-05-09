@@ -16,7 +16,7 @@ service sshd start
 service mysqld start
 /etc/init.d/nginx start
 /etc/init.d/redis start
-php-fpm
+/usr/local/php/sbin/php-fpm
 
 ##必须在最后
 /bin/bash

@@ -59,8 +59,9 @@ RUN cd /usr/src && \
  ./configure --prefix=/usr/local/php --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-gd --with-jpeg-dir=/usr/lib64/ --with-iconv --with-openssl --with-curl --enable-pcntl --with-zlib --enable-bcmath --enable-json --enable-fpm --enable-mbstring --enable-soap --enable-opcache && \
  make -j4 && make install
 
- ### yaf
 RUN echo -e 'export PATH=/usr/local/php/bin:usr/local/php/sbin:$PATH' >> ~/.bashrc && \
+ ln -s /usr/local/php/bin/php /usr/bin/php && \
+ ### yaf
  source ~/.bashrc && \
  cd /usr/src && \
  wget http://pecl.php.net/get/yaf-3.0.4.tgz && tar zxvf yaf-3.0.4.tgz && \
@@ -81,6 +82,10 @@ RUN echo -e 'export PATH=/usr/local/php/bin:usr/local/php/sbin:$PATH' >> ~/.bash
  wget https://phar.phpunit.de/phpunit-6.1.phar && \
  cp phpunit-6.1.phar /usr/local/bin/phpunit && \
  chmod +x /usr/local/bin/phpunit
+
+### 创建日志文件夹  改变日志文件夹
+RUN mkdir -p /data1/logs && \
+ chmod 777 /data1/logs
 
 ADD conf/php/php.ini /usr/local/php/lib/
 ADD conf/php/php-fpm.conf /usr/local/php/etc/
