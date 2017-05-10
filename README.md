@@ -54,6 +54,10 @@
 4. 规章制度和研发规范
 
     > 详见文档 https://github.com/ifintech/rddocs
+    
+5. 本地开发环境搭建
+   
+    > 详见文档 https://github.com/ifintech/rdbuild/tree/master/local
 
 
 
