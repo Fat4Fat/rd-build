@@ -5,83 +5,99 @@
 >官方安装 https://store.docker.com/editions/community/docker-ce-server-centos?tab=description
 
 中国镜像安装最新稳定版
+```Shell
+curl -sSL https://get.daocloud.io/docker | sh
+```
 
-    curl -sSL https://get.daocloud.io/docker | sh
 键入docker -v命令，若显示如下返回则表示安装成功
 
-    [root@localhost vagrant]# docker -v
-    Docker version 17.03.0-ce, build 60ccb22
+```shell
+[root@localhost vagrant]# docker -v
+Docker version 17.03.0-ce, build 60ccb22
+```
 
 docker服务启动 重启 停止
 
-    [root@localhost vagrant]# service docker start
-    Redirecting to /bin/systemctl start  docker.service
-    
-    [root@localhost vagrant]# service docker restart
-    Redirecting to /bin/systemctl restart  docker.service
-    
-    [root@localhost vagrant]# service docker stop
-    Redirecting to /bin/systemctl stop  docker.service
+```Shell
+[root@localhost vagrant]# service docker start
+Redirecting to /bin/systemctl start  docker.service
+
+[root@localhost vagrant]# service docker restart
+Redirecting to /bin/systemctl restart  docker.service
+
+[root@localhost vagrant]# service docker stop
+Redirecting to /bin/systemctl stop  docker.service
+```
 ## docker容器网段设置
 
 
 ### 分配独立IP
 安装pipework
 
-    wget https://github.com/jpetazzo/pipework/archive/master.zip
-    unzip master.zip
-    cp pipework-master/pipework  /usr/bin/
-    chmod +x /usr/bin/pipework
+```Shell
+wget https://github.com/jpetazzo/pipework/archive/master.zip
+unzip master.zip
+cp pipework-master/pipework  /usr/bin/
+chmod +x /usr/bin/pipework
+```
 
 给宿主机创建网桥
 
-    [root@localhost ~]# vi /etc/sysconfig/network-scripts/ifcfg-eno16777736
-    TYPE=Ethernet
-    #BOOTPROTO=static
-    #IPADDR=172.16.146.116
-    #NETMASK=255.255.255.0
-    #GATEWAY=172.16.146.1
-    #DNS1=8.8.8.8
-    #DNS2=192.168.252.3
-    BOOTPROTO="none"
-    DEFROUTE="yes"
-    PEERDNS="yes"
-    PEERROUTES="yes"
-    NAME=eno16777736
-    ONBOOT=yes
-    BRIDGE="br0"
-    ~
+```shell
+[root@localhost ~]# vi /etc/sysconfig/network-scripts/ifcfg-eno16777736
+TYPE=Ethernet
+#BOOTPROTO=static
+#IPADDR=172.16.146.116
+#NETMASK=255.255.255.0
+#GATEWAY=172.16.146.1
+#DNS1=8.8.8.8
+#DNS2=192.168.252.3
+BOOTPROTO="none"
+DEFROUTE="yes"
+PEERDNS="yes"
+PEERROUTES="yes"
+NAME=eno16777736
+ONBOOT=yes
+BRIDGE="br0"
+~
+```
 
 设置物理网卡桥接到网桥
 
-    [root@localhost ~]# vi /etc/sysconfig/network-scripts/ifcfg-br0
-    TYPE="Bridge"
-    BOOTPROTO=static
-    IPADDR=172.16.146.116
-    NETMASK=255.255.255.0
-    GATEWAY=172.16.146.1
-    PREFIX=24
-    DNS1=8.8.8.8
-    DNS2=192.168.252.3
-    NAME=br0
-    ONBOOT=yes
-    DEVICE=br0
+```shell
+[root@localhost ~]# vi /etc/sysconfig/network-scripts/ifcfg-br0
+TYPE="Bridge"
+BOOTPROTO=static
+IPADDR=172.16.146.116
+NETMASK=255.255.255.0
+GATEWAY=172.16.146.1
+PREFIX=24
+DNS1=8.8.8.8
+DNS2=192.168.252.3
+NAME=br0
+ONBOOT=yes
+DEVICE=br0
+```
 
 重启网络
 
-    service network restart
+```shell
+service network restart
+```
 一个例子
 
-    docker run -d -it --net=none --name test01 centos
+```shell
+docker run -d -it --net=none --name test01 centos
+pipework br0 test01 172.16.2.3/24@172.16.2.1
+```
 
-    pipework br0 test01 172.16.2.3/24@172.16.2.1
 ## docker仓库
 
 ### 使用本地gitlab仓库（优先）
 ### 搭建本地仓库（不建议）
-
-    sudo docker run -d -p 5000:5000 -v /opt/data/registry:/tmp/registry registry
-
+    docker run -d -p 5000:5000 --restart=always --name registry \
+      -v /data/registry:/var/lib/registry \
+      registry:2
 ### 在私有仓库上传、下载、搜索镜像
 
 > https://yeasy.gitbooks.io/docker_practice/content/repository/local_repo.html

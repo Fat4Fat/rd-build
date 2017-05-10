@@ -100,7 +100,7 @@ vim /ect/hosts
 
 ### 3. 代码（镜像）仓库 & 持续集成 172.16.2.3 gitlab.nw.com 
 
->优先使用docker安装 https://docs.gitlab.com/omnibus/docker/
+> 优先使用docker安装 https://docs.gitlab.com/omnibus/docker/
 
 ```Shell
 sudo docker run -itd \
@@ -117,7 +117,15 @@ gitlab/gitlab-ce:latest
 pipework br0 gitlab 172.16.2.3/24@172.16.2.1
 ```
 
->centos安装部署gitlab https://about.gitlab.com/downloads/#centos7
+> 使用内置的registry服务
+> https://docs.gitlab.com/ce/administration/container_registry.html#configure-container-registry-under-an-existing-gitlab-domain
+
+配置 vim /etc/gitlab/gitlab.rb
+```shell
+registry_external_url 'https://gitlab.nw.com:4567'
+```
+
+> centos安装部署gitlab https://about.gitlab.com/downloads/#centos7
 
 配置 vim /etc/gitlab/gitlab.rb
 
