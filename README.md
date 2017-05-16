@@ -42,6 +42,7 @@
         - 镜像仓库
         - 内网研发中心
 
+    > 部署安装 https://github.com/ifintech/rdbuild/tree/master/build
 2. 研发中心
 
     > 为研发测试提供提升开发效率和保证质量的平台
