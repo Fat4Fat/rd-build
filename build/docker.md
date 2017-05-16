@@ -1,4 +1,4 @@
-# docker基本构建
+# docker套件及网络配置
 
 ## docker安装
 
@@ -122,9 +122,3 @@ commit镜像
 dockerfile镜像
 
 >https://yeasy.gitbooks.io/docker_practice/content/image/dockerfile/
-
-## 自定义镜像dockerfile
-
-- centos7 镜像，新增sshd
-- php 镜像，php7.1.2 & mysql 5.7 & redis3.2 & nginx
-- java 镜像，java8 & mysql5.7 redis3.2

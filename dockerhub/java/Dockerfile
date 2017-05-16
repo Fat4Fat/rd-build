@@ -10,13 +10,14 @@ FROM centos:6.8
 MAINTAINER zhangce zhangce5413@gmail.com
 
 ##################### 常用基础软件 START #####################
-RUN yum install -y net-tools vsftpd vim wget crontabs gcc make openssh-server git && \
+RUN yum install -y vsftpd vim wget crontabs gcc make openssh-server git unzip && \
  service sshd start && \
  echo "root:Root1.pwd" | chpasswd
 ##################### 常用基础软件 END #####################
 
 ##################### 安装java-1.8.0-openjdk-headless #########
-RUN yum install -y java-1.8.0-openjdk-headless
+RUN yum install -y java-1.8.0-openjdk && \
+ yum install -y java-1.8.0-openjdk-devel.x86_64
 ##################### 安装java-1.8.0-openjdk-headless end #####
 
 ###################### redis START #####################
@@ -34,6 +35,19 @@ RUN rpm -Uvh https://dev.mysql.com/get/mysql57-community-release-el6-9.noarch.rp
  defaultmysqlpwd=`grep 'A temporary password' /var/log/mysqld.log | awk -F"root@localhost: " '{ print $2}' ` && \
  /usr/bin/mysql -uroot -p${defaultmysqlpwd} --connect-expired-password -e "SET PASSWORD = PASSWORD('Root1.pwd');grant all privileges on *.* to root@'%' identified by 'Root1.pwd';"
 ###################### mysql END #####################
+
+###################### mvn ############################
+RUN wget http://mirror.bit.edu.cn/apache/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.zip && \
+ unzip apache-maven-3.5.0-bin.zip && \
+ mv apache-maven-3.5.0 /opt/maven
+
+ENV MAVEN_HOME=/opt/maven
+ENV PATH=${MAVEN_HOME}/bin:${PATH}
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk.x86_64
+ENV PATH=$JAVA_HOME/bin:${PATH}
+
+ADD conf/maven/settings.xml /opt/maven/conf/settings.xml
+#######################################################
 
 ADD rc.local /etc/rc.local
 RUN chmod +x /etc/rc.local

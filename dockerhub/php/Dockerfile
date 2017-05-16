@@ -44,7 +44,6 @@ RUN yum -y install readline-devel pcre-devel openssl-devel && \
 ###添加配置
 ADD conf/nginx/* /etc/nginx/
 ADD conf/nginx/vhosts/* /etc/nginx/vhosts/
-ADD conf/nginx/nginx /etc/init.d/nginx
 ##################### openresty END #####################
 
 

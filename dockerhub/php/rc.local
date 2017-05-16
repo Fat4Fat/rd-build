@@ -14,9 +14,9 @@ touch /var/lock/subsys/local
 
 service sshd start
 service mysqld start
-/etc/init.d/nginx start
 /etc/init.d/redis start
 /usr/local/php/sbin/php-fpm
+/usr/local/openresty/nginx/sbin/nginx
 
 ##必须在最后
 /bin/bash
