@@ -1,7 +1,7 @@
 # 基于docker的研发环境构建
 
-> 非云服务资源部署如下
-> 不使用云服务，无非两点 1.价格贵 2.核心数据资产，要么就是内部支撑无法使用云服务比如DNS
+> 非云服务资源部署如下  
+> 不使用云服务，无非两点 1.价格贵 2.核心数据资产，要么就是内部支撑无法使用云服务比如DNS  
 
 ### 内网入口 staff.nw.com
 ### 1. 宿主机 172.16.2.2
@@ -64,6 +64,7 @@ pipework br0 gitlab 172.16.2.3/24@172.16.2.1
 ```shell
 registry_external_url 'https://gitlab.nw.com:4567'
 ```
+添加证书 /data/gitlab/config/ssl/  
 
 > centos安装部署gitlab https://about.gitlab.com/downloads/#centos7
 
@@ -136,16 +137,14 @@ pipework br0 openvpn 172.16.2.5/24@172.16.2.1
 
 ### 7. 海外办公专线
 
->访问海外资源（邮箱、代码包、产品）
+> 访问海外资源（邮箱、代码包、产品）
 >
->服务端: 安装shadowsocks https://github.com/shadowsocks  
+> 服务端: 安装shadowsocks https://github.com/shadowsocks  
 >
->客户端：
+> 客户端：
 > - 局域网网络内配合PAC使用
 > - mac客户端 https://github.com/shadowsocks/ShadowsocksX-NG
  
-
-
 
 ### 8. 内网研发平台 172.16.2.9 rd.nw.com
 

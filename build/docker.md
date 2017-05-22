@@ -1,4 +1,4 @@
-# docker套件及网络配置
+# docker基础环境
 
 ## docker安装
 
@@ -72,19 +72,20 @@ IPADDR=172.16.146.116
 NETMASK=255.255.255.0
 GATEWAY=172.16.146.1
 PREFIX=24
-DNS1=8.8.8.8
-DNS2=192.168.252.3
+DNS1=172.16.2.2
+DNS2=114.114.114.114
 NAME=br0
 ONBOOT=yes
 DEVICE=br0
 ```
 
-重启网络
+重启网络  
 
 ```shell
 service network restart
 ```
-一个例子
+
+给容器分配一个独立IP的例子  
 
 ```shell
 docker run -d -it --net=none --name test01 centos
