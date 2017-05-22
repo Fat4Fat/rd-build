@@ -104,7 +104,7 @@ docker stop CONTAINER [CONTAINER...]
 docker rm [OPTIONS] CONTAINER [CONTAINER...]
 ```
 
-- **-f ** 强制删除一个运行中的容器
+- **-f** 强制删除一个运行中的容器
 
 ### 镜像操作
 
@@ -126,7 +126,7 @@ docker images
 docker rmi IMAGE [IMAGE...]
  ```
 
-- **-f ** 强制删除
+- **-f** 强制删除
 
 ## 参考资料
 
