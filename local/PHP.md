@@ -14,9 +14,11 @@
 
 ## 新建工程
 
-> 本地phplib路径 {phplib}
-> 本地项目路径 {project}
-> 项目名称{appname}
+> 本地phplib路径 {phplib}  
+> 
+> 本地项目路径 {project}  
+> 
+> 项目名称 {appname}  
 
 
 1. 拉取公司的php镜像
@@ -62,9 +64,11 @@
    
 ## 导入工程
 
-> 本地phplib路径 {phplib}
-> 本地项目路径 {project}
-> 项目名称{appname}
+> 本地phplib路径 {phplib}  
+> 
+> 本地项目路径 {project}  
+> 
+> 项目名称 {appname} 
 
 1. 拉取公司的php镜像
 
