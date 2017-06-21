@@ -22,6 +22,7 @@
 1. 线上架构
 1. 应用技术栈
 
+[整体阅读地址](https://ifentech.gitbooks.io/rdbuild/content/)
 
 
 
