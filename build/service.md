@@ -3,23 +3,15 @@
 > 非云服务资源部署如下  
 > 不使用云服务，无非两点 1.核心数据资产 2.要么就是内部支撑无法使用云服务比如DNS  
 
-## 内网入口 staff.nw.com
+### 内网入口 staff.nw.com
 
-## 所有员工的授权认证统一接入集中auth系统
+### 所有员工的授权认证统一接入集中auth系统
 
 
 
 ### 6. 企业wiki 172.16.2.6 wiki.nw.com
 
-### 7. 海外办公专线
 
-> 访问海外资源（邮箱、代码包、产品）
->
-> 服务端: 安装shadowsocks https://github.com/shadowsocks  
->
-> 客户端：
-> - 局域网网络内配合PAC使用
-> - mac客户端 https://github.com/shadowsocks/ShadowsocksX-NG
  
 
 ### 8. 内网研发平台 172.16.2.9 rd.nw.com
