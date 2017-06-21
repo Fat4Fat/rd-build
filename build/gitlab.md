@@ -29,6 +29,7 @@ registry_external_url 'https://gitlab.nw.com:4567'
 > centos安装部署gitlab https://about.gitlab.com/downloads/#centos7
 
 配置 vim /etc/gitlab/gitlab.rb
+> 开启ldap
 
 ```shell
 gitlab_rails['ldap_enabled'] = true
