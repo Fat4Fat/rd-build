@@ -3,7 +3,7 @@
 * [简介](README.md)
 * [基础设施](build/README.md)
   * [网络设置](build/net.md)
-  * [物理机容器化](build/docker.md)
+  * [容器化](build/docker.md)
   * [内部服务](build/service.md)
     * [dns](build/dns.md)
     * [gitlab](build/gitlab.md)
