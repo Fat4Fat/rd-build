@@ -15,7 +15,3 @@ owncloud
 
 pipework br0 owncloud 172.16.2.4/24@172.16.2.1
 ```
-
-### todo 
-
-1. 接入ldap
