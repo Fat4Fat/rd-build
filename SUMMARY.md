@@ -11,6 +11,7 @@
     * [vpn](build/vpn.md)
     * [wiki](build/wiki.md)
     * [overseas-proxy](build/proxy.md)
+    * [员工认证](build/auth.md)
 * [本地研发构建](docker.md)
   * [docker](docker/docker.md)
 * [内网研发中心](center.md)
