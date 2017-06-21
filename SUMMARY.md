@@ -9,13 +9,11 @@
     * [gitlab](build/gitlab.md)
     * [网盘](build/pan.md)
     * [vpn](build/vpn.md)
-    * wiki
+    * [wiki]
     * [overseas-proxy](build/proxy.md)
 * [本地研发构建](docker.md)
   * [docker](docker/docker.md)
 * [内网研发中心](center.md)
-  * 研发中心
-  * gitlab
 * [持续交付](cd.md)
   * [issue](cd/issue.md)
   * [workflow](cd/workflow.md)
