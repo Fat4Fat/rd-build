@@ -13,7 +13,6 @@
     * [overseas-proxy](build/proxy.md)
 * [本地研发构建](docker.md)
   * [docker](docker/docker.md)
-  * vagrant
 * [内网研发中心](center.md)
   * 研发中心
   * gitlab
