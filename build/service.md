@@ -10,20 +10,6 @@
 
 
 
-### 4. 网盘 172.16.2.4 pan.nw.com
-
-> 安装owncloud https://owncloud.org/  
-
-```shell
-sudo docker run -itd \
---name owncloud \
---net=none \
---volume /data/owncloud:/var/www/html \
-owncloud
-
-pipework br0 owncloud 172.16.2.4/24@172.16.2.1
-```
-
 
 
 ### 5. 公网接入内网办公VPN 172.16.2.5
