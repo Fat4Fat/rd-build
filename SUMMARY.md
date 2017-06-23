@@ -16,7 +16,7 @@
   * [docker](docker/docker.md)
   * [服务端]()
   * [前端]()
-* [内网研发中心](center.md)
+* [内网研发平台](center.md)
 * [持续交付](cd.md)
   * [issue](cd/issue.md)
   * [workflow](cd/workflow.md)
