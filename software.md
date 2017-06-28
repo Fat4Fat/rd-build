@@ -28,6 +28,4 @@
     
 - 研发
 
-    - gitlab代码仓库
-    - docker镜像仓库
-    - 内网研发中心
+    - gitlab
