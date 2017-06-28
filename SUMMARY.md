@@ -4,13 +4,15 @@
 * [基础设施](build/README.md)
   * [网络](build/net.md)
     * [dns](build/dns.md)
+    * [vpn](build/vpn.md)
+    * [海外代理](build/proxy.md)
+    * [反向代理]
   * [容器](build/docker.md)
 * [软件服务](software.md)
     * [gitlab](build/gitlab.md)
     * [网盘](build/pan.md)
-    * [vpn](build/vpn.md)
     * [wiki](build/wiki.md)
-    * [overseas-proxy](build/proxy.md)
+    
     * [员工认证](build/auth.md)
 * [研发环境&工具]()
   * [内网研发平台](center.md)
