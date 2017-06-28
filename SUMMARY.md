@@ -25,5 +25,6 @@
 * [制度规范](rule.md)
   * [研发规范](rule/rd.md)
     * [API设计规范](rule/api.md)
+    * [JAVA开发规范](rule/java.md)
   * [规章制度](rule/regulation.md)
 
