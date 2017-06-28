@@ -31,4 +31,5 @@
     * [安全规范](rule/safe.md)
   * [规章制度](rule/regulation.md)
     * [BUG评级及总结](rule/bug.md)
+    * [项目总结复盘](rule/sum.md)
 
