@@ -6,7 +6,7 @@
     * [dns](build/dns.md)
     * [vpn](build/vpn.md)
     * [海外代理](build/proxy.md)
-    * [反向代理]
+    * [反向代理](build/socket.md)
   * [容器](build/docker.md)
 * [软件服务](software.md)
     * [gitlab](build/gitlab.md)
