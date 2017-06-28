@@ -4,9 +4,8 @@
 * [基础设施](build/README.md)
   * [网络设置](build/net.md)
     * [dns](build/dns.md)
-  * [容器化](build/docker.md)
+  * [容器](build/docker.md)
 * [软件服务](software.md)
-  
     * [gitlab](build/gitlab.md)
     * [网盘](build/pan.md)
     * [vpn](build/vpn.md)
