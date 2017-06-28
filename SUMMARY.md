@@ -26,9 +26,9 @@
   * [研发规范](rule/rd.md)
     * [API设计规范](rule/api.md)
     * [JAVA开发规范](rule/java.pdf)
-    * [PHP开发规范]
-    * [MYSQL设计规范]
-    * [安全规范]
+    * [PHP开发规范](rule/php.md)
+    * [MYSQL设计规范](rule/mysql.md)
+    * [安全规范](rule/safe.md)
   * [规章制度](rule/regulation.md)
-    * [BUG评级及总结]
+    * [BUG评级及总结](rule/bug.md)
 
