@@ -24,5 +24,6 @@
   * [例子](cd/example.md)
 * [制度规范](rule.md)
   * [研发规范](rule/rd.md)
+    * [API设计规范](rule/api.md)
   * [规章制度](rule/regulation.md)
 
