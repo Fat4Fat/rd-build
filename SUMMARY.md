@@ -2,7 +2,7 @@
 
 * [简介](README.md)
 * [基础设施](build/README.md)
-  * [网络设置](build/net.md)
+  * [网络](build/net.md)
     * [dns](build/dns.md)
   * [容器](build/docker.md)
 * [软件服务](software.md)
