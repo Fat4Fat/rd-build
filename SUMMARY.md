@@ -23,7 +23,7 @@
 * [持续交付](cd.md)
   * [issue](cd/issue.md)
   * [workflow](cd/workflow.md)
-  * [CI/CD](cd/cicd.md)
+  * [ci/cd](cd/cicd.md)
   * [例子](cd/example.md)
 * [制度规范](rule.md)
   * [研发规范](rule/rd.md)
