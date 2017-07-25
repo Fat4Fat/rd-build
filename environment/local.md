@@ -4,14 +4,14 @@
 
 ### 基本技术要求
 
-1. [本地docker环境安装与使用](docker.md)
+1. [本地docker环境安装与使用](local/docker.md)
 2. [git使用简易指南](http://www.bootcss.com/p/git-guide/)
 3. linux基础使用
 
 
 ### PHP本地开发环境构建
 
-> [PHP本地开发环境](PHP.md)
+> [PHP本地开发环境](local/php.md)
 
 
 ### JAVA本地开发环境构建
