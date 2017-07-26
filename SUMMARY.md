@@ -20,8 +20,8 @@
     * [JAVA](environment/local/java.md)
     * 前端
   * 联调&测试
+  * [CI单元测试环境](environment/ci-unit.md)
   * 稳定测试
-  * 准生产测试
 * [持续交付](cd.md)
   * [issue](cd/issue.md)
   * [workflow](cd/workflow.md)
