@@ -246,84 +246,45 @@ CMD ["/etc/rc.local"]
 ```yaml
 # 定义 stages
 stages:
-  - build
   - test
+  - push
   - deploy
   - cleanup
   
 variables:
-  # 镜像名称
-  IMAGES_ID: gitlab.yilumofang.com:4567/dockerhub/php/image
-  # 容器名称
-  CONTAINER_ID: $CI_PROJECT_NAME-$CI_COMMIT_SHA
-  # 部署到生产的文件目录
-  DEPLOY_PRODUCT_PATH: app bin conf public
-  DEPLOY_PRODUCT_CD_FILE: /data/product/code/$CI_PROJECT_NAME.$CI_COMMIT_SHA.zip
-  # 部署到CDN的文件目录
-  DEPLOY_CDN_PRODUCT_PATH: static
-  DEPLOY_CDN_PRODUCT_CD_PATH: /data/product/cdn/$CI_PROJECT_NAME
-  # 部署到测试环境的目录
-  DEPLOY_TEST_CD_FILE: /data/htdocs/$CI_PROJECT_NAME.$CI_COMMIT_SHA.zip
-  DEPLOY_TEST_CD_PATH: /data/htdocs/$CI_PROJECT_NAME.$CI_COMMIT_SHA
+  # 项目唯一标识
+  PROJECT_INDEX: ${CI_PROJECT_NAME}${CI_COMMIT_SHA}
+  DEV_IMAGE_NAME: gitlab.yilumofang.com:4567/${CI_PROJECT_PATH}/image
 
-# 构建
-build_job:
-  stage: build
-  script:
-    - docker run -itd -v $CI_PROJECT_DIR:/data1/htdocs/$CI_PROJECT_NAME -v /data/htdocs/phplib:/data1/htdocs/phplib --name $CONTAINER_ID $IMAGES_ID
-    - docker exec -i $CONTAINER_ID /bin/bash -c "sleep 10;chmod +x /data1/htdocs/$CI_PROJECT_NAME/build/build.sh;sh /data1/htdocs/$CI_PROJECT_NAME/build/build.sh"
-  only:
-    - master
-  tags:
-    - CI
-
-# 测试
+# 单元测试
 test_job:
   stage: test
   script:
-    - docker exec -i $CONTAINER_ID /bin/bash -c "cd /data1/htdocs/$CI_PROJECT_NAME/test/ && /usr/local/bin/phpunit "
+    - docker-compose -p ${PROJECT_INDEX} up php -d
+    - sleep 120
+    - docker-compose -p ${PROJECT_INDEX} run --rm -w /data1/htdocs/${CI_PROJECT_NAME}/test/ php phpunit
   only:
     - master
   tags:
     - CI
 
-# 部署代码到内网稳定测试环境
-deploy_test_job:
-  stage: deploy
+# 推送镜像到线下代码仓库
+push_image:
+  stage: push
   script:
-    - git archive --format zip -o $DEPLOY_TEST_CD_FILE HEAD
-    - unzip -o -d $DEPLOY_TEST_CD_PATH $DEPLOY_TEST_CD_FILE
-    - rm -rf /data/htdocs/$CI_PROJECT_NAME
-    - cp -rf $DEPLOY_TEST_CD_PATH /data/htdocs/$CI_PROJECT_NAME
-    # 测试环境restart
-    - docker exec -i TEST-$CI_PROJECT_NAME /bin/bash -c "sh /data1/htdocs/$CI_PROJECT_NAME/bin/service.sh reload"
-    - rm -rf $DEPLOY_TEST_CD_FILE
+    - docker build -t ${DEV_IMAGE_NAME}:${CI_COMMIT_SHA} .
+    - sh /data/gitlab/bin/push.sh ${DEV_IMAGE_NAME}:${CI_COMMIT_SHA} dev
   only:
     - master
-  environment:
-    name: test
   tags:
-    - CD
+    - CI
 
-# 推送代码到生成环境仓库
-push_product_job:
-  stage: deploy
-  script:
-    - git archive -o $DEPLOY_PRODUCT_CD_FILE HEAD $DEPLOY_PRODUCT_PATH
-    - cp -rf static/* $DEPLOY_CDN_PRODUCT_CD_PATH
-  environment:
-    name: production
-  when: manual
-  only:
-    - production
-  tags:
-    - CD
-
-# 清除CI的测试容器
+# 清理ci过程中产生的环境
 cleanup_job:
   stage: cleanup
   script:
-    - docker rm -f $CONTAINER_ID
+    - docker-compose -p ${PROJECT_INDEX} down
+    - docker rmi ${PROJECT_INDEX}_php
   when: always
   only:
     - master

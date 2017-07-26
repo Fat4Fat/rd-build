@@ -44,15 +44,28 @@
 
 以服务端开发进行举例，其他开发过程类似。
 
-#### 常驻分支创建
+#### 本地开发环境构建
+
+首先根据[本地环境构建](/environment/local.md)方法构建本地开发环境，生成项目所需的初始代码、初始数据和环境。
+
+#### 初始化代码仓库
+
+将初始代码提交到代码仓库中，创建master分支。
+
+```shell
+cd a_service
+git init
+git remote add origin git@gitlab.yilumofang.com:A/service.git
+git add .
+git commit
+git push -u origin master
+```
 
 ![创建production](/images/branch/创建production分支.png)
 
-小黑接到需求后，首先创建master分支和production生产分支。简单来做可以通过gitlab的UI来创建：
+创建production（生产分支）常驻分支，简单来做可以通过gitlab的UI来创建，或者通过本地命令行创建分支并push到服务器上：
 
-或者通过本地命令行创建分支并push到服务器上：
-
-```shell
+```
 # 当前分支为master
 git branch production
 git push -u origin production
@@ -60,7 +73,7 @@ git push -u origin production
 
 在gitlab中将production分支设置为保护分支，gitlab会自动将master分支设置为默认分支、保护分支。
 
-> 因为项目是第一次开发，如果是非第一次开发可以跳过以上操作。
+> 因为项目是首次开发，如果是非第一次开发可以跳过以上操作。
 
 #### 分支开发
 

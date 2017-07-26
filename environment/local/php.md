@@ -56,7 +56,7 @@
 1. 在项目的根目录下执行构建命令，生成项目环境。
 
    ```shell
-   docker-compose -p demo up
+   docker-compose -p demo up -d
    ```
 
 2. 修改本地hosts。
