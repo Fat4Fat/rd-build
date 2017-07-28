@@ -16,6 +16,7 @@
 随着人员的增加，而且项目周期一长就会出现各种问题。因此，**就像代码需要代码规范一样，代码管理同样需要一个清晰的流程和规范**。在参考了gitflow和gitlabfolw后我们采用了gitlabflow并进行了一些细微的调整。
 
 ### 人员划分
+
 1. 产品
 2. 研发
 3. 项目负责人
@@ -28,7 +29,7 @@
 
 1. issue的标题应该描述出最后想要的结果来。
 2. issue的标题尽量使用简洁的英文描述为开头，方便开发人员创建分支。
-3. 每个issue尽可能的小，可以将多个小issue关联到一个大的issue里，通过子任务的方式体现，同时可以直接连接到相关issue上(使用#进行关联)。
+3. 每个issue尽可能的小，可以将多个小issue关联到一个大的issue里，通过子任务的方式体现，同时可以直接连接到相关issue上\(使用\#进行关联\)。
 
 #### 里程碑
 
@@ -38,41 +39,38 @@
 
 有不同颜色的类别，用来帮助过滤问题，区分问题的紧急程度和类型。
 
-
 ### 开发流程
 
 ![workflow](/images/workflow.png)
 
 #### 分支介绍
 
-- Production 分支
+* Production 分支
 
 生产分支，这个分支最近发布到生产环境的代码， 这个分支只能从其他分支合并，不能在这个分支直接修改
 
-- Master 分支
+* Master 分支
 
-这个分支是我们是我们的主开发分支，是所有分支分源头，这个主要合并与其他分支，比如Feature分支和production分支
+这个分支是我们的主开发分支，是所有分支分源头，这个主要合并与其他分支，比如Feature分支和production分支
 
-- Feature 分支系列
+* Feature 分支系列
 
 这个系列分支主要是基于issue创建的用来开发一个新的功能，一旦开发完成，我们合并回Master。
 
-- Hotfix分支
+* Hotfix分支
 
 当我们在Production发现紧急Bug时候，我们需要创建一个Hotfix, 完成Hotfix后，我们合并回Master分支。
 
 #### 工作方式
 
-
-
 1. 发现bug或提出新需求时需要到issues列表中提交issue.填写issue内容;选择issue级别;指定响应的开发人员.
 
 2. 开发人员收到issue后,创建开发分支.开发分支的命名规则为:feature - issue编号 - 分支名称,例如“feature-7-login-find-pwd”.
 
-3. 开发人员在完成分支自测后发起到master的merge request,审核人员review代码通过后，触发CI集成测试，并反馈测试结果。 
+3. 开发人员在完成分支自测后发起到master的merge request,审核人员review代码通过后，触发CI集成测试，并反馈测试结果。
 
-   > 1. 从commit的message中或者是merge request的信息中可以关联相关的issue,具体语法是:“fixes #7”或者“closes #7”.这样会在issue中创建一个评论，并且merge request会显示相关联的issue.如果这个merge request被接受，这个issue会自动被关闭.
-   > 2. 假如你仅仅想关联这个问题，但是不关闭这个问题，你可以这样写：#7
+   > 1. 从commit的message中或者是merge request的信息中可以关联相关的issue,具体语法是:“fixes \#7”或者“closes \#7”.这样会在issue中创建一个评论，并且merge request会显示相关联的issue.如果这个merge request被接受，这个issue会自动被关闭.
+   > 2. 假如你仅仅想关联这个问题，但是不关闭这个问题，你可以这样写：\#7
 
    当master上的代码通过CI后，会触发master上的CD，自动将代码推送到稳定测试环境中。
 
@@ -81,7 +79,6 @@
 4. 当准备发布上线的时候，首先将代码merge到production分支上触发CD，将merge后的production代码自动推送到生产代码仓库中，之后可通过人工发布的操作，完成代码的生产发布。
 
    ![部署](/images/部署.png)
-
 
 #### gitlab使用注意事项
 
@@ -113,3 +110,4 @@
 [Git工作流指南：Gitflow工作流](http://blog.jobbole.com/76867/)
 
 [gitlab示例](https://gitlab.com/gitlab-org/gitlab-ce/issues)
+
