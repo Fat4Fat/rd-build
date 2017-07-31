@@ -13,20 +13,21 @@
   * [wiki](build/wiki.md)
   * [auth](build/auth.md)
   * [rap](build/rap.md)
-* [研发环境&工具](environment.md)
-  * [内网研发平台](rd/center.md)
-  * [本地环境](environment/local.md)
-    * [PHP](environment/local/php.md)
-    * [JAVA](environment/local/java.md)
-    * [前端](environment/local/qian-duan.md)
-  * 联调&测试
-  * [CI单元测试环境](environment/ci-unit.md)
-  * 稳定测试
-* [持续交付](cd.md)
-  * [issue](cd/issue.md)
-  * [workflow](cd/workflow.md)
-  * [ci/cd](cd/cicd.md)
-  * [例子](cd/example.md)
+* [交付模式](jiao-fu-mo-shi.md)
+  * [需求](jiao-fu-mo-shi/xu-qiu.md)
+  * [本地开发](jiao-fu-mo-shi/kai-fa.md)
+    * [PHP](jiao-fu-mo-shi/kai-fa/php.md)
+    * [前端](jiao-fu-mo-shi/kai-fa/qian-duan.md)
+    * JAVA
+  * [联调](jiao-fu-mo-shi/lian-tiao.md)
+  * [测试](jiao-fu-mo-shi/ce-shi.md)
+    * [冒烟测试](jiao-fu-mo-shi/ce-shi/mao-yan.md)
+    * [单元测试](jiao-fu-mo-shi/ce-shi/dan-yuan.md)
+    * 集成测试
+  * 验收
+  * 发布
+  * [附录一：分支管理](jiao-fu-mo-shi/workflow.md)
+  * [附录二：流程示例](jiao-fu-mo-shi/example.md)
 * [制度规范](rule.md)
   * [研发规范](rule/rd.md)
     * [API设计规范](rule/api.md)
@@ -37,12 +38,3 @@
   * [规章制度](rule/regulation.md)
     * [BUG评级及总结](rule/bug.md)
     * [项目总结复盘](rule/sum.md)
-* [交付模式](jiao-fu-mo-shi.md)
-  * [需求](jiao-fu-mo-shi/xu-qiu.md)
-  * [本地开发](jiao-fu-mo-shi/kai-fa.md)
-    * [PHP](jiao-fu-mo-shi/kai-fa/php.md)
-    * [前端](jiao-fu-mo-shi/kai-fa/qian-duan.md)
-    * JAVA
-  * [联调](jiao-fu-mo-shi/ce-shi.md)
-  * [测试](jiao-fu-mo-shi/ce-shi.md)
-

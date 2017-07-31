@@ -58,6 +58,52 @@
    ```shell
    docker-compose -p demo up -d
    ```
+   编排文件`docker-compose.yml`：
+
+   ```yaml
+   version: "3"
+   services:
+     nginx:
+       image: nginx
+       restart: always
+       ports:
+         - "80:80"
+       volumes:
+         - ./build/nginx/vhosts/${PROJECT_NAME}.conf:/etc/nginx/conf.d/${PROJECT_NAME}.conf
+         - ./build/nginx/fastcgi_params:/etc/nginx/fastcgi_params
+       links:
+         - php
+
+     php:
+       build: .
+       command: php-fpm
+       restart: always
+       volumes:
+         - .:/data1/htdocs/${PROJECT_NAME}
+         - /tmp/logs:/data1/logs
+       links:
+         - mysql
+         - redis
+
+     mysql:
+       image: mysql:5.7
+       restart: always
+       command:
+         - --character-set-server=utf8mb4
+         - --collation-server=utf8mb4_unicode_ci
+         - --skip-character-set-client-handshake
+       environment:
+         MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+         MYSQL_DATABASE: ${PROJECT_NAME}
+       volumes:
+         - ./build/sql:/docker-entrypoint-initdb.d
+
+     redis:
+       image: redis:alpine
+       restart: always
+   ```
+
+   > 如果本地需要开启多个项目环境，则需要修改编排文件中的端口映射，例如改为81:80，访问时域名后加上端口即可。
 
 2. 修改本地hosts。
 
