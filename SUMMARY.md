@@ -18,7 +18,7 @@
   * [本地环境](environment/local.md)
     * [PHP](environment/local/php.md)
     * [JAVA](environment/local/java.md)
-    * 前端
+    * [前端](environment/local/qian-duan.md)
   * 联调&测试
   * [CI单元测试环境](environment/ci-unit.md)
   * 稳定测试
@@ -37,4 +37,12 @@
   * [规章制度](rule/regulation.md)
     * [BUG评级及总结](rule/bug.md)
     * [项目总结复盘](rule/sum.md)
+* [交付模式](jiao-fu-mo-shi.md)
+  * [需求](jiao-fu-mo-shi/xu-qiu.md)
+  * [本地开发](jiao-fu-mo-shi/kai-fa.md)
+    * [PHP](jiao-fu-mo-shi/kai-fa/php.md)
+    * 前端
+    * JAVA
+  * [联调](jiao-fu-mo-shi/ce-shi.md)
+  * [测试](jiao-fu-mo-shi/ce-shi.md)
 
