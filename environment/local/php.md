@@ -1,4 +1,4 @@
-# 搭建PHP本地开发环境
+# PHP本地开发
 
 ### 简介
 
@@ -8,7 +8,7 @@
 
 #### PHP框架
 
-> 项目介绍：https://github.com/ifintech/phplib
+> 项目介绍：[https://github.com/ifintech/phplib](https://github.com/ifintech/phplib)
 
 ### 获取项目代码
 
@@ -75,3 +75,4 @@
 本地代码是挂载到开发环境中的，即直接修改本地的项目文件, 即可在容器中见到变化。
 
 [php代码开发规范](rule/php.md)
+
