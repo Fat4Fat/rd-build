@@ -4,8 +4,8 @@
 
 根据语言划分了不同的开发角色，角色间的开发方式是不同的。
 
-* 前端开发人员
-* php开发人员
+* [前端开发人员](jiao-fu/kai-fa/qian-duan.md)
+* [php开发人员](jiao-fu/kai-fa/php.md)
 * java开发人员
 
 ### 环境准备
