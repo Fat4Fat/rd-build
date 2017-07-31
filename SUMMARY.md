@@ -25,7 +25,7 @@
     * [单元测试](jiao-fu/ce-shi/dan-yuan.md)
     * 集成测试
   * 验收
-  * 发布
+  * [发布](jiaofu/fa-bu.md)
   * [附录一：分支管理](jiao-fu/workflow.md)
   * [附录二：流程示例](jiao-fu/example.md)
 * [制度规范](rule.md)
