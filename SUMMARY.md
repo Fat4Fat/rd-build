@@ -21,7 +21,7 @@
     * JAVA
   * [联调](jiao-fu/lian-tiao.md)
   * [测试](jiao-fu/ce-shi.md)
-    * [测试](jiao-fu/ce-shi/mao-yan.md)
+    * [独立部署测试](jiao-fu/ce-shi/mao-yan.md)
     * [自动集成测试](jiao-fu/ce-shi/dan-yuan.md)
   * [内网稳定环境]()
   * [发布生产](jiao-fu/fa-bu.md)
