@@ -21,6 +21,6 @@
     - [wiki](build/wiki.md)
     - [网盘](build/pan.md)（自建或者钉钉网盘）
 - 研发
-    - [gitlab](build/gitlab.md)(代码仓库管理)
-    - [rap](build/rap.md)(Mock工具)
-    - [rd](build/rd.md)(虚拟机及网络平台)
+    - [gitlab](build/gitlab.md)（代码仓库管理）
+    - [rap](build/rap.md)（Mock工具）
+    - [rd](build/rd.md)（虚拟机及网络平台）
