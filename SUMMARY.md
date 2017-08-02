@@ -21,10 +21,10 @@
     * JAVA
   * [联调](jiao-fu/lian-tiao.md)
   * [测试](jiao-fu/ce-shi.md)
-    * [独立部署测试](jiao-fu/ce-shi/mao-yan.md)
-    * [自动集成测试](jiao-fu/ce-shi/dan-yuan.md)
-  * [内网稳定环境]()
-  * [发布生产](jiao-fu/fa-bu.md)
+    * [人工测试](jiao-fu/ce-shi/mao-yan.md)
+    * [自动化测试](jiao-fu/ce-shi/dan-yuan.md)
+    * 验收
+  * [发布](jiao-fu/fa-bu.md)
   * [附录一：分支管理](jiao-fu/workflow.md)
   * [附录二：流程示例](jiao-fu/example.md)
 * [制度规范](rule.md)
@@ -37,3 +37,4 @@
   * [规章制度](rule/regulation.md)
     * [BUG评级及总结](rule/bug.md)
     * [项目总结复盘](rule/sum.md)
+

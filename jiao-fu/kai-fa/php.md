@@ -56,7 +56,7 @@
 1. 在项目的根目录下执行构建命令，生成项目环境。
 
    ```shell
-   docker-compose -p demo up -d
+   docker-compose -p demo run -p 80:80 -d nginx
    ```
    编排文件`docker-compose.yml`：
 
@@ -66,8 +66,6 @@
      nginx:
        image: nginx
        restart: always
-       ports:
-         - "80:80"
        volumes:
          - ./build/nginx/vhosts/${PROJECT_NAME}.conf:/etc/nginx/conf.d/${PROJECT_NAME}.conf
          - ./build/nginx/fastcgi_params:/etc/nginx/fastcgi_params
