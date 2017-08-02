@@ -5,7 +5,7 @@
 confluence安装设置
 > 参考 https://github.com/joker8023/confluence
 
-安装完成后分配IP
+安装完成后分配IP和域名
 
 ### 项目wiki
 
