@@ -31,3 +31,5 @@ service dnsmasq restart
 添加自定义域名，在路由器里设置172.16.2.2为默认DNS服务器
 
 
+
+

@@ -2,8 +2,6 @@
 
 > 核心是组织管理,围绕组织管理开展,目的是推动业务流转
 
-
-
 - 组织管理（钉钉）
     - 通讯录
     - 组织管理
@@ -21,6 +19,6 @@
     - [wiki](build/wiki.md)
     - [网盘](build/pan.md)（自建或者钉钉网盘）
 - 研发
-
-    - [gitlab](build/gitlab.md)(代码仓库管理)
-    - [rap](build/rap.md)(Mock工具)
+    - [gitlab](build/gitlab.md)（代码仓库管理）
+    - [rap](build/rap.md)（Mock工具）
+    - [rdcenter](build/rd.md)（虚拟机及网络平台）
