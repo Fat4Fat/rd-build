@@ -14,9 +14,13 @@
    docker-compose up -d
    ```
 
+3. 配置内网HTTP代理
+
+   参考[内网HTTP代理](/base/nginx.md)
+
 #### 前端人员
 
-1. 修改配置文件`config/webpack.compose.js`，添加联调的api代理。
+1. 修改配置文件`config/webpack.compose.js`，添加联调的api代理，域名为服务端人员给出的域名。
 
    ```javascript
    const PROXY = {
@@ -27,11 +31,6 @@
      },
    }
    ```
+   如果服务端人员进行了内网HTTP代理的配置，则准备工作结束，可以开始联调。
 
-2. 修改本地host，添加服务端人员机器的IP地址与域名映射。
-
-   ```
-   192.168.30.103	demo.d.ylmf.com
-   ```
-
-   准备工作结束，可以开始联调。
+2. 如果服务端人员未配置内网HTTP代理，则需要前端人员修改本地host，添加服务端人员机器的IP地址与域名映射，此时可以开始联调。

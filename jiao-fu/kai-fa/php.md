@@ -56,8 +56,14 @@
 1. 在项目的根目录下执行构建命令，生成项目环境。
 
    ```shell
-   docker-compose -p demo run -p 80:80 -d nginx
+   docker-compose -p demo run -d nginx
    ```
+   或者
+
+   ```
+   docker-compose -p demo up -d
+   ```
+
    编排文件`docker-compose.yml`：
 
    ```yaml
@@ -65,7 +71,8 @@
    services:
      nginx:
        image: nginx
-       restart: always
+       ports:
+         - "80:80"
        volumes:
          - ./build/nginx/vhosts/${PROJECT_NAME}.conf:/etc/nginx/conf.d/${PROJECT_NAME}.conf
          - ./build/nginx/fastcgi_params:/etc/nginx/fastcgi_params
@@ -75,17 +82,14 @@
      php:
        build: .
        command: php-fpm
-       restart: always
        volumes:
          - .:/data1/htdocs/${PROJECT_NAME}
-         - /tmp/logs:/data1/logs
        links:
          - mysql
          - redis
 
      mysql:
        image: mysql:5.7
-       restart: always
        command:
          - --character-set-server=utf8mb4
          - --collation-server=utf8mb4_unicode_ci
@@ -98,10 +102,9 @@
 
      redis:
        image: redis:alpine
-       restart: always
    ```
 
-   > 如果本地需要开启多个项目环境，则需要修改编排文件中的端口映射，例如改为81:80，访问时域名后加上端口即可。
+   > 如果本地需要开启多个项目环境，修改run命令的端口映射即可，例如：docker-compose -p demo run -p 81:80 -d nginx
 
 2. 修改本地hosts。
 
