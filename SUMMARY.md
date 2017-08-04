@@ -17,7 +17,7 @@
   * [需求](dev/issue.md)
   * [本地开发](dev/develop.md)
     * [PHP](dev/develop/php.md)
-    * [前端](dev/develop/qian-duan.md)
+    * [前端](dev/develop/client.md)
     * JAVA
   * [联调](dev/debug.md)
   * [测试](dev/test.md)
