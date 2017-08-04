@@ -15,7 +15,7 @@
   * [rap](build/rap.md)
 * [开发交付流程](dev.md)
   * [需求](dev/issue.md)
-  * [本地开发](dev/develop.md)
+  * [开发](dev/develop.md)
     * [PHP](dev/develop/php.md)
     * [前端](dev/develop/client.md)
     * JAVA
@@ -26,7 +26,8 @@
   * [内网稳定环境]()
   * [发布生产](dev/publish.md)
   * [附录一：开发工作流](dev/workflow.md)
-  * [附录二：流程示例](dev/example.md)
+  * [附录二：CI/CD](dev/cicd.md)
+  * [附录三：流程示例](dev/example.md)
 * [制度规范](rule.md)
   * [研发规范](rule/rd.md)
     * [API设计规范](rule/api.md)
