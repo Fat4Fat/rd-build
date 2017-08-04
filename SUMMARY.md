@@ -23,7 +23,7 @@
   * [测试](dev/test.md)
     * [自动集成](dev/test/ci.md)
     * [独立部署](dev/test/manual.md)
-  * [内网稳定环境]()
+  * [内网稳定环境](dev/stable.md)
   * [发布生产](dev/publish.md)
   * [附录一：开发工作流](dev/workflow.md)
   * [附录二：CI/CD](dev/cicd.md)
