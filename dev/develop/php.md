@@ -64,6 +64,8 @@
    docker-compose -p demo up -d
    ```
 
+   > 如果本地需要开启多个项目环境，修改run命令的端口映射即可，例如：docker-compose -p demo run -p 81:80 -d nginx
+
    编排文件`docker-compose.yml`：
 
    ```yaml
@@ -103,8 +105,6 @@
      redis:
        image: redis:alpine
    ```
-
-   > 如果本地需要开启多个项目环境，修改run命令的端口映射即可，例如：docker-compose -p demo run -p 81:80 -d nginx
 
 2. 修改本地hosts。
 
