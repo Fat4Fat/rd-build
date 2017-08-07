@@ -61,17 +61,7 @@ git commit
 git push -u origin master
 ```
 
-![创建production](/images/branch/创建production分支.png)
-
-创建production（生产分支）常驻分支，简单来做可以通过gitlab的UI来创建，或者通过本地命令行创建分支并push到服务器上：
-
-```
-# 当前分支为master
-git branch production
-git push -u origin production
-```
-
-在gitlab中将production分支设置为保护分支，gitlab会自动将master分支设置为默认分支、保护分支。
+gitlab会自动将master分支设置为默认分支、保护分支。
 
 > 因为项目是首次开发，如果是非第一次开发可以跳过以上操作。
 
@@ -116,23 +106,11 @@ git branch -d 2-credit-task
 
 ![img](/images/branch/合并分支.png)
 
-小黑在发起合并请求或者push请求时可以添加 `Closes #2`来关闭相关问题。小黑在将代码push到`master`后就开始触发了集成测试（CI）,如果测试不通过小黑需要在需求分支上修改代码后，继续发起合并请求。当集成测试通过后，自动触发CD操作将代码部署到稳定测试环境上，小黑的当前功能已经开发完成了。
+小黑在发起合并请求或者push请求时可以添加 `Closes #2`来关闭相关问题。小黑在将代码push到`master`后就开始触发了集成测试（CI）,如果测试不通过小黑需要在需求分支上修改代码后，继续发起合并请求。当集成测试通过后，会自动构建当前版本镜像，上传到线下镜像仓库，并更新稳定测试环境，小黑的当前功能已经开发完成了。
 
 #### 版本发布
 
-当大家都开发完成自己的需求后，开始发布准备，首先需要先部署代码。先将代码合并到production分支。
-![合并到production分支](/images/branch/合并到production分支.png)
-gitlab操作请参考合并分支请求操作，git命令操作如下：
-
-```shell
-## 合并到production分支
-git pull origin production
-git checkout production
-git merge master
-git push
-```
-
-合并完代码后需要手动确认将代码推送到生产代码仓库中，之后自动切换生产代码，完成发布。如下图所示：
+当大家都开发完成自己的需求后，需要发布生产。进入gitlab，找到需要发布版本的CIjob，点击push_online按钮，完成发布。如下图所示：
 
 ![发布操作](/images/gitlab/6.发布操作.png)
 
@@ -145,9 +123,8 @@ git push
 也可以进行命令行操作：
 
 ```shell
-## 给production分支添加tag
-git pull origin production
-git checkout production
+## 给master分支添加tag
+git pull origin master
 ## 如果是补标签则在后面加上版本号即可，例如：git tag -a v1.0 9fceb02
 git tag -a v1.0 -m '版本1.0发布'
 ## 此处注意git push并不会把标签传送到远端服务器上，只有通过显式命令才能分享标签到远端仓库。
