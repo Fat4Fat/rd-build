@@ -27,33 +27,61 @@
 
 项目代码地址：https://github.com/ifintech/auth.git
 
-框架地址：https://github.com/ifintech/phplib.git
+镜像地址：
 
-环境采用：[PHP基础环境](https://hub.docker.com/r/ifintech/php7/)
+执行构建命令完成项目搭建：
 
-1. 生成auth容器：
-
-   ````shell
-   docker run -itd --name auth ifintech/php7
-   ````
-
-2. 部署代码和phplib：
-
-   ```shell
-   docker exec -i auth /bin/bash -c "mkdir /data1/htdocs;git clone https://github.com/ifintech/auth.git /data1/htdocs/auth;git clone https://github.com/ifintech/phplib.git /data1/htdocs/phplib"
-   ```
-
-3. 初始化环境：
-
-   ```shell
-   docker exec -i auth /bin/bash -c "chmod +x /data1/htdocs/auth/build/build.sh;sh /data1/htdocs/auth/build/build.sh"
-   ```
+```shell
+docker run -itd \
+--net=none \
+--name auth \
+--restart always \
+--volume /data/auth/conf/nginx/auth.conf:/usr/local/openresty/nginx/conf/vhosts/auth.conf \ 
+--volume /data/auth/conf/server/dd.php:/data1/htdocs/auth/conf/server/dev/dd.php \ 
+--volume /data/auth/conf/security/api.php:/data1/htdocs/auth/conf/security/dev/api.php \ 
+ifintech/auth
+```
 
 ### 配置
 
-1. 钉钉配置，配置文件位置`/data1/htdocs/auth/conf/server/dev/dd.php`
+1. 修改nginx配置文件`/data/auth/conf/nginx/auth.conf`
 
-   ```php
+   ```
+   server {
+           listen  80;
+           server_name auth.nw.com;
+           root /data1/htdocs/auth/public;
+
+           access_log  logs/auth.access.log  main;
+           error_log   logs/auth.error.log;
+
+           location / {
+               fastcgi_pass   web;
+               fastcgi_index  index;
+               include        fastcgi_params;
+               rewrite ^(.*)$ /index.php$1 break;
+           }
+
+           location ~ /admin {
+               fastcgi_pass   web;
+               fastcgi_index  index;
+               include        fastcgi_params;
+               rewrite ^(.*)$ /admin.php$1 break;
+           }
+   }
+   ```
+
+   重启nginx：
+
+   ```
+   docker exec -i gitlab /bin/bash -c "/usr/local/openresty/nginx/sbin/nginx -s reload"
+   ```
+
+   ​
+
+2. 修改钉钉配置文件`/data/auth/conf/server/dd.php`
+
+   ```
    <?php
    return array(
        'corpid'     => '',
@@ -62,9 +90,11 @@
    );
    ```
 
-2. auth认证配置，配置文件位置`/data1/htdocs/auth/conf/security/dev/api.php`
+   ​
 
-   ```php
+3. 修改ldap配置文件`/data/auth/conf/security/api.php`
+
+   ```
    <?php
    return array(
        'ldap'  => array(

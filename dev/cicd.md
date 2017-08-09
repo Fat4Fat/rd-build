@@ -57,8 +57,6 @@
 
 ## 如何实现CI/CD
 
-#### 持续集成的实现
-
 要实现持续集成我们首先要做到什么：
 
 1. 使用版本控制工具来管理代码。
@@ -69,11 +67,7 @@
 6. 快速构建，持续集成的关键在于快速反馈，需要长时间构建的CI是极其糟糕的。构建的时间尽量满足10分钟原则即将构建的时间控制在10分钟之内。
 
 
-### CI/CD操作手册
-
-#### 管理员手册
-
-##### 1.安装gitlab-ci-multi-runner
+### 安装 gitlab-ci-multi-runner
 
 gitlab-ci-multi-runner用于运行作业。
 
@@ -102,49 +96,6 @@ gitlab-runner start
 > 删除runner
 >
 > gitlab-runner unregister --url  --token
-
-##### 2.配置邮件通知
-
-修改`/etc/gitlab/gitlab.rb`文件添加邮件配置：
-
-```ruby
-# 开启邮件配置
-gitlab_rails['gitlab_email_enabled'] = true
-
-# 为了防止邮件被当做垃圾邮件拦截，使用smtp
-# https://docs.gitlab.com/omnibus/settings/smtp.html#testing-the-smtp-configuration
-gitlab_rails['smtp_enable'] = true
-gitlab_rails['smtp_address'] = "smtp.exmail.qq.com"
-gitlab_rails['smtp_port'] = 465
-gitlab_rails['smtp_user_name'] = "gitlab@jrmf360.com"
-gitlab_rails['smtp_password'] = "smtp password"
-gitlab_rails['smtp_authentication'] = "login"
-gitlab_rails['smtp_enable_starttls_auto'] = true
-gitlab_rails['smtp_tls'] = true
-gitlab_rails['gitlab_email_from'] = 'gitlab@jrmf360.com'
-```
-
-加载配置，重启服务:
-
-```shell
-# 停止服务
-gitlab-ctl stop
-# 重新加载配置
-gitlab-ctl reconfigure
-# 开启服务
-gitlab-ctl start
-```
-
-检查是否成功,
-
-```shell
-# 进入cosole
-gitlab-rails console
-# 执行邮件发送命令
-irb(main):001:0>Notify.test_email('destination_email@address.com', 'Message Subject', 'Message Body').deliver_now
-```
-
-如果出现错误可以通过`/var/log/maillog`邮件日志查看。
 
 ### 相关文章
 
