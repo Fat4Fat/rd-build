@@ -44,7 +44,7 @@
 1. 直接通过`git clone`项目代码即可。
 
    ```shell
-   git clone git@gitlab.yilumofang.com:demo/demo.git
+   git clone git@gitlab.nw.com:demo/demo.git
    ```
 
    > 需要注意是否拥有项目代码检出的权限

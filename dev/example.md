@@ -55,7 +55,7 @@
 ```shell
 cd a_service
 git init
-git remote add origin git@gitlab.yilumofang.com:A/service.git
+git remote add origin git@gitlab.nw.com:A/service.git
 git add .
 git commit
 git push -u origin master
