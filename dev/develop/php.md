@@ -121,5 +121,8 @@
 
 本地代码是挂载到开发环境中的，即直接修改本地的项目文件, 即可在容器中见到变化。通过`docker logs -f 容器名称`即可实施查看日志
 
+### 技术栈
 [php代码开发规范](rule/php.md)
+[phpunit](http://www.phpunit.cn/manual/current/zh_cn/index.html)
+[yaf+phplib](http://www.laruence.com/manual/)
 
