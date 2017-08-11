@@ -31,7 +31,7 @@ auth镜像地址：https://hub.docker.com/r/ifintech/auth/
 
 ldap镜像地址：https://hub.docker.com/r/ifintech/ldap/
 
-编排文件：
+编排文件`compose-stack-auth.yml`：
 
 ```yaml
 version: "3"
@@ -88,7 +88,7 @@ networks:
 启动
 
 ```
-docker stack deploy auth --compose-file compose-stack-log.yml
+docker stack deploy auth --compose-file compose-stack-auth.yml
 ```
 
 ### 配置
