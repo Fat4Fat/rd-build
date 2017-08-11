@@ -45,6 +45,18 @@ services:
       PORT: 10389
       AUTH_URL: https://auth.com
       AUTH_TOKEN: demo_token
+    deploy:
+	  replicas: 1
+	  resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '.1'
+          memory: 100M
+      update_config:
+        parallelism: 1
+        delay: 30s
  	networks:
       - servicenet	
   php:
@@ -53,9 +65,18 @@ services:
     volumes:
       - /data1/auth/security:/data1/htdocs/auth/conf/security
       - /data1/auth/server:/data1/htdocs/auth/conf/server
-    links:
-      - mysql
-      - redis
+    deploy:
+	  replicas: 1
+	  resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '.1'
+          memory: 100M
+      update_config:
+        parallelism: 1
+        delay: 30s
     networks:
       - servicenet
 networks:
