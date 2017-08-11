@@ -1,37 +1,63 @@
 # docker
 
-## docker安装
+### 简介
 
->官方安装 https://store.docker.com/editions/community/docker-ce-server-centos?tab=description
+*Docker* 是一个开源的应用容器引擎，可以轻松的为任何应用创建一个轻量级的、可移植的、自给自足的容器。
 
-中国镜像安装最新稳定版
-```Shell
-curl -sSL https://get.daocloud.io/docker | sh
-```
+### docker 安装
 
-键入docker -v命令，若显示如下返回则表示安装成功
+1. mac本地安装
 
-```shell
-[root@localhost vagrant]# docker -v
-Docker version 17.03.0-ce, build 60ccb22
-```
+   > 官方安装文档：https://docs.docker.com/docker-for-mac/install/
 
-docker服务启动 重启 停止
+2. centos安装
 
-```Shell
-[root@localhost vagrant]# service docker start
-Redirecting to /bin/systemctl start  docker.service
+   > 官方安装文档：https://docs.docker.com/engine/installation/linux/docker-ce/centos/
 
-[root@localhost vagrant]# service docker restart
-Redirecting to /bin/systemctl restart  docker.service
+   中国镜像安装最新稳定版
 
-[root@localhost vagrant]# service docker stop
-Redirecting to /bin/systemctl stop  docker.service
-```
-## docker容器网段设置
+   ```Shell
+   curl -sSL https://get.daocloud.io/docker | sh
+   ```
+
+   键入docker -v命令，若显示如下返回则表示安装成功
+
+   ```shell
+   [root@localhost vagrant]# docker -v
+   Docker version 17.03.0-ce, build 60ccb22
+   ```
+
+   docker服务启动 重启 停止
+
+   ```Shell
+   [root@localhost vagrant]# service docker start
+   Redirecting to /bin/systemctl start  docker.service
+
+   [root@localhost vagrant]# service docker restart
+   Redirecting to /bin/systemctl restart  docker.service
+
+   [root@localhost vagrant]# service docker stop
+   Redirecting to /bin/systemctl stop  docker.service
+   ```
 
 
-### 分配独立IP
+  在命令行中运行以下命令, 成功返回则代表安装成功
+
+  ```shell
+  $ docker --version
+  Docker version 17.03.0-ce, build 60ccb22
+
+  $ docker-compose --version
+  docker-compose version 1.11.2, build dfed245
+
+  $ docker-machine --version
+  docker-machine version 0.10.0, build 76ed2a6
+  ```
+
+### docker容器网段设置
+
+#### 分配独立IP
+
 安装pipework
 
 ```Shell
@@ -92,14 +118,23 @@ docker run -d -it --net=none --name test01 centos
 pipework br0 test01 172.16.2.3/24@172.16.2.1
 ```
 
-## docker仓库
+### docker镜像仓库
 
-### 使用本地gitlab仓库（优先）
-### 搭建本地仓库（不建议）
-    docker run -d -p 5000:5000 --restart=always --name registry \
-      -v /data/registry:/var/lib/registry \
-      registry:2
-### 在私有仓库上传、下载、搜索镜像
+#### 本地仓库搭建
+
+* 使用本地gitlab仓库（优先）
+
+  参看软件服务[gitlab](/build/gitlab.md)章节
+
+* 搭建本地仓库（不建议）
+
+  ```
+  docker run -d -p 5000:5000 --restart=always --name registry \
+    -v /data/registry:/var/lib/registry \
+    registry:2
+  ```
+
+#### 在私有仓库上传、下载、搜索镜像
 
 > https://yeasy.gitbooks.io/docker_practice/content/repository/local_repo.html
 
@@ -123,3 +158,81 @@ commit镜像
 dockerfile镜像
 
 >https://yeasy.gitbooks.io/docker_practice/content/image/dockerfile/
+
+### 常用命令
+
+#### 容器操作
+
+1. 运行一个新的容器
+
+   ```
+   docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+   ```
+
+   - **--name** 为容器指定一个名称
+   - **-d** 后台运行容器，并返回容器ID
+   - **-i** 以交互模式运行容器，通常与 -t 同时使用
+   - **-t** 为容器重新分配一个伪输入终端，通常与 -i 同时使用
+   - **-p** 建立本机到容器的端口映射 `80:80`代表将本机80端口映射到容器的80端口上
+   - **-v** 建立本机到容器的目录映射
+
+2. 在运行的容器中执行命令
+
+   ```
+   docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+   ```
+
+   - **-i** 以交互模式运行，通常与 -t 同时使用
+   - **-t** 分配一个伪输入终端，通常与 -i 同时使用
+   - **-d** 在后台运行
+
+3. 列出容器
+
+   ```
+   docker ps [OPTIONS]
+   ```
+
+   - **默认** 列出所有在运行的容器信息
+   - **-a** 显示所有的容器，包括未运行的  
+
+4. 启动一个已经被停止的容器
+
+   ```
+   docker start CONTAINER [CONTAINER...]
+   ```
+
+5. 停止一个运行中的容器
+
+   ```
+   docker stop CONTAINER [CONTAINER...]
+   ```
+
+6. 删除一个容器
+
+   ```
+   docker rm [OPTIONS] CONTAINER [CONTAINER...]
+   ```
+
+   * **-f** 强制删除一个运行中的容器
+
+#### 镜像操作
+
+1. 从镜像仓库中拉取或者更新指定镜像
+
+   ```
+   docker pull NAME[:TAG|@DIGEST]
+   ```
+
+2. 列出本地镜像
+
+   ```
+   docker images
+   ```
+
+3. 删除本地镜像
+
+   ```
+   docker rmi IMAGE [IMAGE...]
+   ```
+
+   * **-f** 强制删除

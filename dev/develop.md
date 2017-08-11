@@ -13,7 +13,7 @@
 本地环境为项目成员**独自**使用的开发环境，一般搭建在自己的机器上。开发人员在开发前需要掌握一些基本的技术、流程和规范。
 
 * 公共技术
-  1. [本地docker环境的安装与使用](/base/docker/docker.md)
+  1. [本地docker环境的安装与使用](/base/docker.md)
   2. git使用简易指南
   3. linux基本使用
   4. [dockerfile的编写](https://docs.docker.com/engine/reference/builder/)
