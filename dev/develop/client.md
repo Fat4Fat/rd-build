@@ -290,3 +290,102 @@ var deployConfig = {
 webpack
 gh-pages -d dest
 ```
+
+
+
+### dockerfile
+
+```dockerfile
+FROM ifintech/nginx-html
+
+MAINTAINER lvyalin <lvyalin.yl@gmail.com>
+
+COPY dist /data1/htdocs/www
+
+## docker build -t wallet_client .
+## docker run --name nginx -p 80:80 -itd wallet_client
+```
+
+
+
+### gitlab-ci
+
+```
+# 定义 stages
+stages:
+  - push
+  - deploy
+  - cleanup
+variables:
+  # 项目唯一标识
+  PROJECT_INDEX: ${CI_PROJECT_NAME}${CI_COMMIT_SHA}
+  # 线下镜像仓库地址
+  DEV_REGISTRY_ADDRESS: gitlab.nw.com
+  # 生产镜像仓库地址
+  PRO_REGISTRY_ADDRESS: dockerhub.nw.com
+  # 镜像仓库名称
+  REPOSITORY: ${CI_PROJECT_PATH}
+
+before_script:
+  - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DEV_REGISTRY_ADDRESS}
+# 推送镜像到线下代码仓库
+push_offline:
+  stage: push
+  script:
+    - docker build -t ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} .
+    - docker push ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+    # 打上latest标签，以备构建稳定测试环境使用
+    - docker tag ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}
+  after_script:
+    # 清理镜像
+    - docker rmi ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+  only:
+    - master
+  tags:
+    - CI
+
+# 将镜像发布到生产仓库
+push_online:
+  stage: push
+  script:
+    - docker pull ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+    - docker tag ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+    - sh /data/gitlab/bin/push.sh ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+    - docker tag ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}
+    - sh /data/gitlab/bin/push.sh ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}
+  after_script:
+    - docker rmi ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+    - docker rmi ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+  environment:
+    name: production
+  when: manual
+  only:
+    - master
+  tags:
+    - CD
+
+# 更新测试环境的代码
+deploy_test:
+  stage: deploy
+  script:
+    - docker-compose -f /data/test/${CI_PROJECT_PATH}/docker-compose.yml stop php
+    - docker-compose -f /data/test/${CI_PROJECT_PATH}/docker-compose.yml rm -f php
+    - docker-compose -f /data/test/${CI_PROJECT_PATH}/docker-compose.yml up -d php
+  only:
+    - master
+  tags:
+    - CI
+
+# 清理ci过程中产生的环境
+cleanup_job:
+  stage: cleanup
+  script:
+    # 对于稳定测试环境更新时会产生一些tag为none的镜像，此步骤是为了清理这些虚悬镜像
+    - docker images|grep none|awk '{print $3}'|xargs docker rmi -f
+  when: always
+  only:
+    - master
+  tags:
+    - CI
+```
+

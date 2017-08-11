@@ -13,12 +13,12 @@
 本地环境为项目成员**独自**使用的开发环境，一般搭建在自己的机器上。开发人员在开发前需要掌握一些基本的技术、流程和规范。
 
 * 公共技术
-  1. [本地docker环境的安装与使用](/base/docker.md)
-  2. git使用简易指南
-  3. linux基本使用
-  4. [dockerfile的编写](https://docs.docker.com/engine/reference/builder/)
-  5. [docker-compose相关了解](https://docs.docker.com/compose/)
-  6. [gitlab-ci配置](/dev/test/ci.md)
+  1. [git使用简易指南](http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html)
+  2. linux基本使用
+  3. [gitlab-ci配置](/dev/test/ci.md)
+  4. [本地docker环境的安装与使用](https://docs.docker.com/docker-for-mac/install/)
+  5. [dockerfile的编写](https://docs.docker.com/engine/reference/builder/)
+  6. [docker-compose相关了解](https://docs.docker.com/compose/)
 * 流程规范
   1. [开发工作流](/dev/workflow.md)
   2. [研发规范](/rule/rd.md)
