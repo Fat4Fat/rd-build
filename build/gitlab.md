@@ -80,3 +80,32 @@ pipework br0 gitlab 172.16.2.3/24@172.16.2.1
    gitlab_rails['smtp_tls'] = true
    gitlab_rails['gitlab_email_from'] = 'gitlab@nw.com'
    ```
+
+### gitlab-ci-multi-runner
+
+gitlab-ci-multi-runner用于运行CI作业。
+
+```shell
+## 添加yum源：
+curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | sudo bash
+## 安装：
+yum install gitlab-ci-multi-runner
+## 注册runner(使用共享的token)执行器采用shell：
+gitlab-runner register
+## 安装服务：
+gitlab-runner install
+## 启动服务：
+gitlab-runner start
+```
+
+> 设置runner并行执行数量，修改配置文件: /etc/gitlab-runner/config.toml
+>
+> ```
+> concurrent = 4
+> ```
+>
+> 修改gitlab-runner的执行用户: gitlab-runner install --user "vagrant"
+>
+> 删除runner
+>
+> gitlab-runner unregister --url  --token

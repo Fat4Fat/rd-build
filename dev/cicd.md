@@ -1,5 +1,5 @@
 # CI/CD
-## 什么是CI/CD
+### 什么是CI/CD
 
 如果说workflow是串起整个交付流程的一条线的话，那么CI/CD便是这条线上最重要的一点，可以说没有CI/CD就没有持续交付。CI/CD就是持续交付周期中的部署流水线。
 
@@ -17,7 +17,7 @@
 
 
 
-## 为什么要做CI/CD
+### 为什么要做CI/CD
 
 持续集成与持续部署的最大好处在于**提高交付速度、降低风险**。能够在代码提交到资源库之前，进行构建、自动化测试和项目部署等等，我们每天需要提交上线大量的迭代需求，持续集成可以有效的帮助我们发现代码中的 Bug，并且减少一些反复的工作等等，使团队更加有效的开发协作，持续部署可以降低我们在代码发布过程中的风险，是每次代码发布变得简洁、方便。
 
@@ -33,8 +33,6 @@
 - 保持频繁部署，快速生成可部署的软件；
 - 提高项目的能见度，方便团队成员了解项目的进度和成熟度；
 - 增强开发人员对软件产品的信心，帮助建立更好的工程师文化。
-
-
 
 
 #### 持续部署的起因
@@ -55,9 +53,7 @@
 
 
 
-## 如何实现CI/CD
-
-要实现持续集成我们首先要做到什么：
+### 如何实现CI/CD
 
 1. 使用版本控制工具来管理代码。
 2. 实现构建自动化。
@@ -66,36 +62,6 @@
 5. 每次提交都应在集成机上进行构建测试。
 6. 快速构建，持续集成的关键在于快速反馈，需要长时间构建的CI是极其糟糕的。构建的时间尽量满足10分钟原则即将构建的时间控制在10分钟之内。
 
-
-### 安装 gitlab-ci-multi-runner
-
-gitlab-ci-multi-runner用于运行作业。
-
-```shell
-## 添加yum源：
-curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | sudo bash
-## 安装：
-yum install gitlab-ci-multi-runner
-## 注册runner(使用共享的token)执行器采用shell：
-gitlab-runner register
-## 安装服务：
-gitlab-runner install
-## 启动服务：
-gitlab-runner start
-```
-
-
-> 设置runner并行执行数量，修改配置文件: /etc/gitlab-runner/config.toml
->
-> ```
-> concurrent = 4
-> ```
->
-> 修改gitlab-runner的执行用户: gitlab-runner install --user "vagrant"
->
-> 删除runner
->
-> gitlab-runner unregister --url  --token
 
 ### 相关文章
 
