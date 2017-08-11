@@ -94,10 +94,10 @@ docker stack deploy auth --compose-file compose-stack-log.yml
        ),
        'mail' => array(
            'otp' => array(
-               "host" => 'smtp.qiye.163.com',
+               "host" => '',
                "port" => '25',
-               "user" => 'sa@beebank.com',
-               "pwd" =>  'YTJG573dHD34or',
+               "user" => '',
+               "pwd" =>  '',
                "nick" => 'otp密钥信息',
            ),
        ),
