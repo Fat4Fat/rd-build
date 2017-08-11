@@ -27,78 +27,156 @@
 
 项目代码地址：https://github.com/ifintech/auth.git
 
-镜像地址：
+auth镜像地址：https://hub.docker.com/r/ifintech/auth/
 
-执行构建命令完成项目搭建：
+ldap镜像地址：https://hub.docker.com/r/ifintech/ldap/
 
-```shell
-docker run -itd \
---net=none \
---name auth \
---restart always \
---volume /data/auth/conf/nginx/auth.conf:/usr/local/openresty/nginx/conf/vhosts/auth.conf \ 
---volume /data/auth/conf/server/dd.php:/data1/htdocs/auth/conf/server/dev/dd.php \ 
---volume /data/auth/conf/security/api.php:/data1/htdocs/auth/conf/security/dev/api.php \ 
-ifintech/auth
+编排文件：
+
+```yaml
+version: "3"
+services:
+  ldap:
+    image: ifintech/ldap2http
+    ports:
+      - "10389:10389"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 10389
+      AUTH_URL: https://auth.com
+      AUTH_TOKEN: demo_token
+ 	networks:
+      - servicenet	
+  php:
+    image: ifintech/auth
+    command: php-fpm
+    volumes:
+      - /data1/auth/security:/data1/htdocs/auth/conf/security
+      - /data1/auth/server:/data1/htdocs/auth/conf/server
+    links:
+      - mysql
+      - redis
+    networks:
+      - servicenet
+networks:
+  servicenet:
+    external: true
+  
+```
+
+启动
+
+```
+docker stack deploy auth --compose-file compose-stack-log.yml
 ```
 
 ### 配置
 
-1. 修改nginx配置文件`/data/auth/conf/nginx/auth.conf`
+1. 修改钉钉配置文件`/data1/auth/server/production.conf`
 
-   ```
-   server {
-           listen  80;
-           server_name auth.nw.com;
-           root /data1/htdocs/auth/public;
-
-           access_log  logs/auth.access.log  main;
-           error_log   logs/auth.error.log;
-
-           location / {
-               fastcgi_pass   web;
-               fastcgi_index  index;
-               include        fastcgi_params;
-               rewrite ^(.*)$ /index.php$1 break;
-           }
-
-           location ~ /admin {
-               fastcgi_pass   web;
-               fastcgi_index  index;
-               include        fastcgi_params;
-               rewrite ^(.*)$ /admin.php$1 break;
-           }
-   }
-   ```
-
-   重启nginx：
-
-   ```
-   docker exec -i gitlab /bin/bash -c "/usr/local/openresty/nginx/sbin/nginx -s reload"
-   ```
-
-   ​
-
-2. 修改钉钉配置文件`/data/auth/conf/server/dd.php`
-
-   ```
+   ```php
    <?php
    return array(
-       'corpid'     => '',
-       'corpsecret' => '',
-       'token' => '',
+       'cache' => array(
+           'redis' => array(
+               'common' => array(
+                   'host'  => 'redis',
+                   'port'  => 6379,
+                   'timeout'=> 1,
+                   'persistent' => 1,  //默认开启长连接
+               )
+           ),
+       ),
+       'dd' => array(
+           'corpid'     => '',
+           'corpsecret' => '',
+           'token' => 'bonjour',
+       ),
+       'mail' => array(
+           'otp' => array(
+               "host" => 'smtp.qiye.163.com',
+               "port" => '25',
+               "user" => 'sa@beebank.com',
+               "pwd" =>  'YTJG573dHD34or',
+               "nick" => 'otp密钥信息',
+           ),
+       ),
+       'mysql' => array(
+           'auth' => array(
+               'master' => array(
+                   'username'  => 'root',
+                   'password'  => 'Root1.pwd',
+                   'host'      => 'mysql',
+                   'port'      => '3306',
+                   'dbname'    => 'auth',
+                   'pconnect'  => false,
+                   'charset'   => 'utf8',
+                   'timeout'   => 3,
+               ),
+               'slave' => array(
+                   'username'  => 'root',
+                   'password'  => 'Root1.pwd',
+                   'host'      => 'mysql',
+                   'port'      => '3306',
+                   'dbname'    => 'auth',
+                   'pconnect'  => false,
+                   'charset'   => 'utf8',
+                   'timeout'   => 3,
+               ),
+               'backup' => array(
+                   'username'  => 'root',
+                   'password'  => 'Root1.pwd',
+                   'host'      => 'mysql',
+                   'port'      => '3306',
+                   'dbname'    => 'auth',
+                   'pconnect'  => false,
+                   'charset'   => 'utf8',
+                   'timeout'   => 3,
+               )
+           )
+       ),
+       'redis' => array(
+           'common' => array(
+               'host'  => 'redis',
+               'port'  => 6379,
+               'timeout'=> 1,
+               'persistent' => 1,
+               //'db'    => 1,
+           ),
+       ),
    );
    ```
 
    ​
 
-3. 修改ldap配置文件`/data/auth/conf/security/api.php`
+2. 修改ldap配置文件`/data1/auth/security/production.conf`
 
-   ```
+   ```php
    <?php
    return array(
-       'ldap'  => array(
-           'password'  => '',
+       'aes' => array(
+           'common'  => array(
+               'method'    => 'aes128',
+               'password'  => '',
+               'iv'        => '',
+               'options'   =>  0,
+           ),
+           'db'  => array(
+               'method'    => 'aes256',
+               'password'  => '',
+               'iv'        => '6f6e9a4f4c87dfd4',
+               'options'   => OPENSSL_RAW_DATA,
+           ),
+           'dd'  => array(
+               'method'    => 'aes-256-cbc',
+               'password'  => '',
+               'options'   => OPENSSL_ZERO_PADDING,
+           ),
+       ),
+       'api' => array(
+           'ldap'  => array(
+               'password'  => 'token',
+           ),
        ),
    );
    ```
