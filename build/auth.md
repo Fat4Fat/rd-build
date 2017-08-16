@@ -79,6 +79,24 @@ services:
         delay: 30s
     networks:
       - servicenet
+  nginx:
+    image: ifintech/nginx-php
+    networks:
+      - servicenet
+    environment:
+      APP_NAME: auth
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 50M
+      update_config:
+        parallelism: 1
+        delay: 30s
 networks:
   servicenet:
     external: true
