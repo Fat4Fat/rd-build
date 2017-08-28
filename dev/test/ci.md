@@ -64,13 +64,14 @@ push_offline:
 push_online:
   stage: push
   script:
-    - docker pull ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
-    - docker tag ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+    - git archive --format=zip --remote=git@gitlab.nw.com:security/configure.git master -o /tmp/configure.zip
+    - unzip -o /tmp/configure.zip -d /tmp/configure/
+    - cp -r /tmp/configure/${CI_PROJECT_NAME}/* ./
+    - docker build -t ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} .
     - sh /data/gitlab/bin/push.sh ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
     - docker tag ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}
     - sh /data/gitlab/bin/push.sh ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}
   after_script:
-    - docker rmi ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
     - docker rmi ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
   environment:
     name: production
@@ -104,6 +105,110 @@ cleanup_job:
   tags:
     - CI
 ```
+
+java版本CI文件如下：
+
+```yaml
+# 定义 stages
+stages:
+  - test
+  - push
+  - deploy
+  - cleanup
+
+variables:
+  # 项目唯一标识
+  PROJECT_INDEX: ${CI_PROJECT_NAME}${CI_COMMIT_SHA}
+  # 线下镜像仓库地址
+  DEV_REGISTRY_ADDRESS: gitlab.nw.com
+  # 生产镜像仓库地址
+  PRO_REGISTRY_ADDRESS: dockerhub.nw.com
+  # 镜像仓库名称
+  REPOSITORY: ${CI_PROJECT_PATH}
+
+before_script:
+  - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DEV_REGISTRY_ADDRESS}
+
+# 集成测试
+test_job:
+  stage: test
+  script:
+    - echo "skip test"
+  only:
+    - master
+  tags:
+    - CI
+
+# 推送镜像到线下代码仓库
+push_offline:
+  stage: push
+  script:
+    # 编译
+    - mvn package -DskipTests && mv target/$CI_PROJECT_NAME-SNAPSHOT.jar bin/$CI_PROJECT_NAME.jar
+    - docker build -t ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} .
+    - docker push ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+    # 打上latest标签，以备构建稳定测试环境使用
+    - docker tag ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}
+  after_script:
+    # 清理镜像
+    - docker rmi ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+  only:
+    - master
+  tags:
+    - CI
+
+# 将镜像发布到生产仓库
+push_online:
+  stage: push
+  script:
+    # 编译(构建编译环境，进行编译，可以通过编译环境解决不同版本jdk的问题)
+    - git archive --format=zip --format zip -o /tmp/${CI_PROJECT_NAME}.zip HEAD
+    - unzip -o /tmp/${CI_PROJECT_NAME}.zip -d /tmp/${CI_PROJECT_NAME}/
+    - docker run -i --rm --name mvn-jdk7 -v /path/to/local/repo:/path/to/local/repo -v /usr/share/maven/conf/settings.xml:/usr/share/maven/conf/settings.xml -v /tmp/xw-parent:/data/xw-parent -w /data/${CI_PROJECT_NAME} maven:3-jdk-7 mvn package -DskipTests
+    - cp -r /tmp/${CI_PROJECT_NAME}/* ./
+
+    # 添加生产配置
+    - git archive --format=zip --remote=git@gitlab.nw.com:security/configure.git master -o /tmp/configure.zip
+    - unzip -o /tmp/configure.zip -d /tmp/configure/
+    - cp -r /tmp/configure/${CI_PROJECT_NAME}/* ./
+
+    - docker build -t ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} .
+    - sh /data/gitlab/bin/push.sh ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+    - docker tag ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}
+    - sh /data/gitlab/bin/push.sh ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}
+  after_script:
+    - docker rmi ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
+  environment:
+    name: production
+  when: manual
+  only:
+    - master
+  tags:
+    - CD
+
+# 更新稳定环境的代码
+deploy_test:
+  stage: deploy
+  script:
+    - echo "skip deploy test"
+  only:
+    - master
+  tags:
+    - CI
+
+# 清理ci过程中产生的环境
+cleanup_job:
+  stage: cleanup
+  script:
+    - echo "skip cleanup"
+  when: always
+  only:
+    - master
+  tags:
+    - CI
+```
+
+
 
 #### Pipeline
 
