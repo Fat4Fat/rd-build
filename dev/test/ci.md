@@ -143,13 +143,19 @@ test_job:
 push_offline:
   stage: push
   script:
-    # 编译
-    - mvn package -DskipTests && mv target/$CI_PROJECT_NAME-SNAPSHOT.jar bin/$CI_PROJECT_NAME.jar
+    # 编译(构建编译环境，进行编译，可以通过编译环境解决不同版本jdk的问题)
+    - git archive --format=zip --format zip -o /tmp/${PROJECT_INDEX}.zip HEAD
+    - unzip -o /tmp/${PROJECT_INDEX}.zip -d /tmp/${PROJECT_INDEX}/
+    - docker run -i --rm --name mvn-jdk7 -v /path/to/local/repo:/path/to/local/repo -v /usr/share/maven/conf/settings.xml:/usr/share/maven/conf/settings.xml -v /tmp/${PROJECT_INDEX}:/data/${PROJECT_NAME} -w /data/${CI_PROJECT_NAME} maven:3-jdk-7 mvn package -DskipTests
+    - cp -r /tmp/${PROJECT_INDEX}/* ./
+    
     - docker build -t ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} .
     - docker push ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
     # 打上latest标签，以备构建稳定测试环境使用
     - docker tag ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}
   after_script:
+  	- rm -rf /tmp/${PROJECT_INDEX}.zip
+  	- rm -rf /tmp/${PROJECT_INDEX}
     # 清理镜像
     - docker rmi ${DEV_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
   only:
@@ -162,10 +168,10 @@ push_online:
   stage: push
   script:
     # 编译(构建编译环境，进行编译，可以通过编译环境解决不同版本jdk的问题)
-    - git archive --format=zip --format zip -o /tmp/${CI_PROJECT_NAME}.zip HEAD
-    - unzip -o /tmp/${CI_PROJECT_NAME}.zip -d /tmp/${CI_PROJECT_NAME}/
-    - docker run -i --rm --name mvn-jdk7 -v /path/to/local/repo:/path/to/local/repo -v /usr/share/maven/conf/settings.xml:/usr/share/maven/conf/settings.xml -v /tmp/xw-parent:/data/xw-parent -w /data/${CI_PROJECT_NAME} maven:3-jdk-7 mvn package -DskipTests
-    - cp -r /tmp/${CI_PROJECT_NAME}/* ./
+    - git archive --format=zip --format zip -o /tmp/${PROJECT_INDEX}.zip HEAD
+    - unzip -o /tmp/${PROJECT_INDEX}.zip -d /tmp/${PROJECT_INDEX}/
+    - docker run -i --rm --name mvn-jdk7 -v /path/to/local/repo:/path/to/local/repo -v /usr/share/maven/conf/settings.xml:/usr/share/maven/conf/settings.xml -v /tmp/${PROJECT_INDEX}:/data/${PROJECT_NAME} -w /data/${CI_PROJECT_NAME} maven:3-jdk-7 mvn package -DskipTests
+    - cp -r /tmp/${PROJECT_INDEX}/* ./
 
     # 添加生产配置
     - git archive --format=zip --remote=git@gitlab.nw.com:security/configure.git master -o /tmp/configure.zip
@@ -177,6 +183,8 @@ push_online:
     - docker tag ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA} ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}
     - sh /data/gitlab/bin/push.sh ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}
   after_script:
+  	- rm -rf /tmp/${PROJECT_INDEX}.zip
+  	- rm -rf /tmp/${PROJECT_INDEX}
     - docker rmi ${PRO_REGISTRY_ADDRESS}/${REPOSITORY}:${CI_COMMIT_SHA}
   environment:
     name: production
