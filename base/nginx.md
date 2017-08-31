@@ -1,24 +1,6 @@
 ## 内网http代理
 
-需要在公司内部的研发平台配置自己的代理信息。
-
-1. 登录研发平台
-
-   > 研发平台地址：http://rdcenter.xxxx.com
-   >
-   > 登录方式：密码+OTP认证
-
-2. 添加自己要代理的IP、端口和域名
-
-   进入菜单`代理管理->添加代理`添加自己的代理信息
-
-   ![添加代理](/images/rd/rd-添加代理.png)
-
-   > 域名建议使用`.d`的域名
-
-3. 删除自己的代理信息
-
-   ![添加代理](/images/rd/rd-删除代理.png)
+通过orange配置内网代理信息
 
 ### orange搭建
 
@@ -71,8 +53,9 @@ services:
         parallelism: 1
         delay: 30s
     ports:
+      - "80:80"
       - "7777:7777"
-      - "80:9999"
+      - "9999:9999"
     environment:
       - DATABASE_HOST=orange_mysql
       - DATABASE_PORT=3306
@@ -92,3 +75,10 @@ networks:
 docker stack deploy orange -c compose-stack-orange.yml
 ```
 
+### 代理配置
+
+登录orange后台`orange.dev.com:9999`，启用`代理&分流`插件，配置代理信息：
+
+![orange](/images/orange.png)
+
+相关orange使用文档：http://orange.sumory.com/docs/

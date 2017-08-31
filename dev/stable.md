@@ -1,78 +1,120 @@
 ## 内网稳定环境
 
-内网稳定环境现阶段是通过docker compose构建而成，每次有新镜像push到线下代码仓库后则进行内网稳定环境的更新。
+内网稳定环境部署在内网swarm集群环境，每次有新镜像push到线下代码仓库后则进行内网稳定环境的更新。
 
 ### 环境构建
 
-php项目的`docker-compose.yaml`配置文件内容如下：
+项目的`compose-stack-demo.yaml`配置文件内容如下：
 
 ```yaml
 version: "3"
 services:
-  nginx:
-    image: nginx
-    container_name: appname-test-nginx
-    restart: always
-    ports:
-      - "10000:80"
-    volumes:
-      - ./nginx/wallet.conf:/etc/nginx/conf.d/wallet.conf
-      - ./nginx/fastcgi_params:/etc/nginx/fastcgi_params
-    links:
-      - php
-
+  front:
+    image: gitlab.nw.com/demo:latest
+    networks:
+      - servicenet
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 100M
+      update_config:
+        parallelism: 1
+        delay: 30s
   php:
-    image: gitlab.nw.com:4567/path/appname
-    container_name: appname-test-php
-    command: php-fpm
-    restart: always
-    links:
-      - mysql
-      - redis
-
+    image: gitlab.nw.com/demo:latest
+    networks:
+      - servicenet
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.1'
+          memory: 100M
+      update_config:
+        parallelism: 1
+        delay: 30s
+    command: ["php-fpm"]
+  nginx:
+    image: ifintech/nginx-php
+    networks:
+      - servicenet
+    environment:
+      APP_NAME: wallet
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 50M
+      update_config:
+        parallelism: 1
+        delay: 30s
   mysql:
     image: mysql:5.7
-    container_name: appname-test-mysql
-    restart: always
+    networks:
+      - servicenet
+    environment:
+      MYSQL_ROOT_PASSWORD: Root1.pwd
+      MYSQL_DATABASE: wallet
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 100M
+      update_config:
+        parallelism: 1
+        delay: 30s
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
-    environment:
-      MYSQL_ROOT_PASSWORD: Root1.pwd
-      MYSQL_DATABASE: appname
     volumes:
+      - ./sql:/docker-entrypoint-initdb.d
       - ./data/mysql:/var/lib/mysql
 
   redis:
     image: redis:alpine
-    container_name: appname-test-redis
-    restart: always
+    networks:
+      - servicenet
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 100M
+      update_config:
+        parallelism: 1
+        delay: 30s
+networks:
+  servicenet:
+    external: true
 ```
-
-前端项目的`docker-compose.yaml`配置文件内容如下：
-
-```yaml
-version: "3"
-services:
-  client:
-    image: gitlab.nw.com:4567/path/client
-    container_name: appname-test-client
-    restart: always
-    ports:
-      - "10001:80"
-```
-
-
 
 ### 镜像更新
 
-稳定环境的更新操作如下(php项目)：
+每次有新镜像push到线下代码仓库后，触发环境的更新操作，基于docker service update的滚动更新。此步骤有gitlab-ci来设置执行。
 
-```
-docker-compose -f /data/test/${CI_PROJECT_PATH}/docker-compose.yml stop php
-docker-compose -f /data/test/${CI_PROJECT_PATH}/docker-compose.yml rm -f php
-docker-compose -f /data/test/${CI_PROJECT_PATH}/docker-compose.yml up -d php
+```shell
+docker service update ${CI_PROJECT_NAME}_php --with-registry-auth
 ```
 
-其他语言的项目操作类似，只需要修改后面的services名称即可。
+
+
